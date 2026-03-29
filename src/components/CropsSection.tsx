@@ -5,31 +5,43 @@ import riceImg from "@/assets/rice-field.jpg";
 
 const crops = [
   {
-    name: "Rice & Wheat",
-    season: "Kharif / Rabi",
+    name: "Rice (Dhaan)",
+    season: "Kharif",
     image: riceImg,
-    description: "Staple food grains forming the backbone of agriculture. Best grown with proper irrigation and fertile alluvial soil.",
-    details: ["Sowing: June-July / Oct-Nov", "Harvest: Nov-Dec / Mar-Apr", "Yield: 3-5 tons/hectare"],
+    soil: "Clay, Loamy",
+    climate: "Hot & Humid",
+    duration: "120-150 days",
+    water: "High",
+    description: "India's most important staple crop. Requires standing water in paddy fields with proper irrigation systems.",
+    tips: ["Transplant seedlings at 20-25 days", "Use SRI method for better yield", "Apply zinc sulfate at sowing"],
   },
   {
-    name: "Organic Vegetables",
+    name: "Wheat (Gehu)",
+    season: "Rabi",
+    image: smartImg,
+    soil: "Loamy, Clay Loam",
+    climate: "Cool & Dry",
+    duration: "110-130 days",
+    water: "Medium",
+    description: "Second most important cereal crop. Best grown in northern plains with well-drained fertile soil.",
+    tips: ["Sow in November for best results", "4-6 irrigations needed", "Harvest when golden yellow"],
+  },
+  {
+    name: "Vegetables",
     season: "Year-Round",
     image: cropsImg,
-    description: "High-value organic produce including tomatoes, carrots, peppers, and leafy greens for local and export markets.",
-    details: ["Chemical-free farming", "Premium market prices", "Growing demand globally"],
-  },
-  {
-    name: "Smart Farming",
-    season: "Technology-Driven",
-    image: smartImg,
-    description: "Precision agriculture using drones, IoT sensors, and AI to optimize crop yields and reduce resource wastage.",
-    details: ["Drone crop monitoring", "Soil sensor analytics", "AI-based predictions"],
+    soil: "Varies by crop",
+    climate: "Moderate",
+    duration: "45-90 days",
+    water: "Medium-High",
+    description: "High-value organic vegetables including tomatoes, potatoes, onions, and leafy greens for local and export markets.",
+    tips: ["Practice crop rotation", "Use organic compost", "IPM for pest control"],
   },
 ];
 
 const CropsSection = () => {
   return (
-    <section id="crops" className="py-20 bg-accent/50">
+    <section id="crops" className="py-20 bg-muted">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -37,12 +49,9 @@ const CropsSection = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <span className="text-secondary font-medium text-sm uppercase tracking-wider">Crop Information</span>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-2 mb-4">
-            Know Your Crops
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Detailed information about crop varieties, growing seasons, and modern farming techniques.
+          <h2 className="section-title">Crop Database</h2>
+          <p className="section-subtitle">
+            Detailed growing guides with soil, climate, and best practice information for major Indian crops
           </p>
         </motion.div>
 
@@ -56,29 +65,46 @@ const CropsSection = () => {
               transition={{ delay: i * 0.15 }}
               className="bg-card rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover transition-all group"
             >
-              <div className="h-52 overflow-hidden">
+              <div className="h-48 overflow-hidden relative">
                 <img
                   src={crop.image}
                   alt={crop.name}
+                  loading="lazy"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
+                <span className="absolute top-3 right-3 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full">
+                  {crop.season}
+                </span>
               </div>
               <div className="p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-display text-xl font-bold text-foreground">{crop.name}</h3>
-                  <span className="text-xs bg-accent text-accent-foreground px-3 py-1 rounded-full font-medium">
-                    {crop.season}
-                  </span>
-                </div>
+                <h3 className="font-display text-xl font-bold text-foreground mb-3">{crop.name}</h3>
                 <p className="text-muted-foreground text-sm mb-4">{crop.description}</p>
-                <ul className="space-y-1.5">
-                  {crop.details.map((detail) => (
-                    <li key={detail} className="text-sm text-foreground flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />
-                      {detail}
-                    </li>
+
+                <div className="grid grid-cols-2 gap-2 mb-4">
+                  {[
+                    { label: "Soil", value: crop.soil },
+                    { label: "Climate", value: crop.climate },
+                    { label: "Duration", value: crop.duration },
+                    { label: "Water", value: crop.water },
+                  ].map((detail) => (
+                    <div key={detail.label} className="bg-muted rounded-lg p-2 text-center">
+                      <div className="text-xs text-muted-foreground">{detail.label}</div>
+                      <div className="text-xs font-semibold text-foreground">{detail.value}</div>
+                    </div>
                   ))}
-                </ul>
+                </div>
+
+                <div className="border-t border-border pt-3">
+                  <div className="text-xs font-semibold text-foreground mb-2">Growing Tips:</div>
+                  <ul className="space-y-1">
+                    {crop.tips.map((tip) => (
+                      <li key={tip} className="text-xs text-muted-foreground flex items-start gap-1.5">
+                        <span className="w-1 h-1 rounded-full bg-secondary mt-1.5 flex-shrink-0" />
+                        {tip}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </motion.div>
           ))}
