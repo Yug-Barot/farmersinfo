@@ -1,66 +1,75 @@
 import { motion } from "framer-motion";
-import heroImg from "@/assets/hero-farm.jpg";
+import { Sun, Droplets, TrendingUp, ArrowRight, Sprout } from "lucide-react";
 
 const HeroSection = () => {
   return (
-    <section id="home" className="relative min-h-screen flex items-center overflow-hidden">
-      <div className="absolute inset-0">
-        <img src={heroImg} alt="Beautiful farmland at sunrise" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 via-foreground/40 to-transparent" />
+    <section id="home" className="gradient-hero min-h-[90vh] flex items-center pt-14 relative overflow-hidden">
+      {/* Decorative circles */}
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-primary-foreground/5 -mr-40 hidden md:block" />
+      <div className="absolute right-20 top-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full bg-primary-foreground/5 hidden md:block" />
+
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left content */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <span className="inline-flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm text-primary-foreground px-4 py-2 rounded-full text-sm font-medium mb-6 border border-primary-foreground/20">
+              <Sprout className="w-4 h-4" />
+              Smart Farming for Modern India
+            </span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight mb-6">
+              Grow Smarter with{" "}
+              <span className="text-secondary">AgriSmart</span>
+            </h1>
+            <p className="text-lg text-primary-foreground/75 mb-8 max-w-xl leading-relaxed">
+              Your complete farming companion with AI-powered insights, real-time weather, market prices, and a vibrant community of farmers.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <a href="#services" className="btn-white">
+                Get Started Free <ArrowRight className="w-4 h-4" />
+              </a>
+              <a href="#crops" className="btn-outline-white">
+                Explore Crops
+              </a>
+            </div>
+          </motion.div>
+
+          {/* Right widgets */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="hidden lg:flex flex-col items-end gap-4"
+          >
+            <div className="flex gap-4">
+              <div className="bg-primary-foreground/15 backdrop-blur-md rounded-2xl p-5 min-w-[140px] border border-primary-foreground/20 animate-float">
+                <Sun className="w-8 h-8 text-secondary mb-3" />
+                <div className="text-2xl font-bold text-primary-foreground">32°C</div>
+                <div className="text-sm text-primary-foreground/70">Sunny</div>
+              </div>
+              <div className="bg-primary-foreground/15 backdrop-blur-md rounded-2xl p-5 min-w-[140px] border border-primary-foreground/20 animate-float" style={{ animationDelay: "0.5s" }}>
+                <Droplets className="w-8 h-8 text-blue-300 mb-3" />
+                <div className="text-2xl font-bold text-primary-foreground">65%</div>
+                <div className="text-sm text-primary-foreground/70">Humidity</div>
+              </div>
+            </div>
+            <div className="bg-primary-foreground/15 backdrop-blur-md rounded-2xl p-5 min-w-[200px] border border-primary-foreground/20 animate-float" style={{ animationDelay: "1s" }}>
+              <TrendingUp className="w-8 h-8 text-emerald-300 mb-3" />
+              <div className="text-2xl font-bold text-primary-foreground">₹2,450/qtl</div>
+              <div className="text-sm text-primary-foreground/70">Wheat Price</div>
+            </div>
+          </motion.div>
+        </div>
       </div>
 
-      <div className="container mx-auto px-4 relative z-10 pt-16">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-2xl"
-        >
-          <span className="inline-block bg-secondary/90 text-secondary-foreground px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-            🌾 Empowering Farmers Everywhere
-          </span>
-          <h1 className="text-4xl md:text-6xl font-bold text-background leading-tight mb-6">
-            Smart Farming for a{" "}
-            <span className="text-secondary">Better Tomorrow</span>
-          </h1>
-          <p className="text-lg text-background/80 mb-8 max-w-xl">
-            Access modern farming techniques, real-time crop information, market prices,
-            weather updates, and expert agricultural advice — all in one place.
-          </p>
-          <div className="flex flex-wrap gap-4">
-            <a
-              href="#services"
-              className="bg-primary text-primary-foreground px-8 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity text-lg"
-            >
-              Explore Services
-            </a>
-            <a
-              href="#crops"
-              className="bg-background/20 backdrop-blur-sm text-background border border-background/30 px-8 py-3 rounded-lg font-medium hover:bg-background/30 transition-colors text-lg"
-            >
-              View Crops
-            </a>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.8 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 max-w-3xl"
-        >
-          {[
-            { value: "10K+", label: "Farmers Helped" },
-            { value: "500+", label: "Crop Varieties" },
-            { value: "50+", label: "Expert Advisors" },
-            { value: "24/7", label: "Weather Updates" },
-          ].map((stat) => (
-            <div key={stat.label} className="bg-background/10 backdrop-blur-sm rounded-lg p-4 text-center border border-background/20">
-              <div className="text-2xl font-bold text-secondary">{stat.value}</div>
-              <div className="text-sm text-background/70">{stat.label}</div>
-            </div>
-          ))}
-        </motion.div>
+      {/* Wave bottom */}
+      <div className="absolute bottom-0 left-0 right-0">
+        <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
+          <path d="M0 40C360 80 720 0 1080 40C1260 60 1380 50 1440 40V80H0V40Z" fill="hsl(0 0% 98%)" />
+        </svg>
       </div>
     </section>
   );

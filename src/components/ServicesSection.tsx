@@ -1,46 +1,48 @@
 import { motion } from "framer-motion";
-import { Sprout, CloudSun, TrendingUp, Bug, Droplets, Truck, BookOpen, Users } from "lucide-react";
+import { CloudSun, TrendingUp, Sprout, MessageSquare, Users, Calendar } from "lucide-react";
 
 const services = [
   {
-    icon: Sprout,
-    title: "Crop Management",
-    description: "Complete guide on crop selection, planting schedules, soil preparation, and harvest techniques for maximum yield.",
-  },
-  {
     icon: CloudSun,
-    title: "Weather Forecasting",
-    description: "Real-time weather updates and seasonal forecasts to help you plan farming activities effectively.",
+    title: "Weather Forecasts",
+    description: "Get accurate 7-day weather forecasts and farming advisories tailored to your location.",
+    color: "text-blue-500",
+    bg: "bg-blue-50",
   },
   {
     icon: TrendingUp,
     title: "Market Prices",
-    description: "Live market prices for crops, vegetables, and grains across major mandis and trading platforms.",
+    description: "Track real-time mandi prices across India and find the best markets for your produce.",
+    color: "text-primary",
+    bg: "bg-accent",
   },
   {
-    icon: Bug,
-    title: "Pest & Disease Control",
-    description: "Identify crop diseases and pests with expert recommendations for organic and chemical treatments.",
+    icon: Sprout,
+    title: "Crop Guide",
+    description: "Comprehensive information on 20+ crops including soil requirements, climate, and seasons.",
+    color: "text-primary",
+    bg: "bg-accent",
   },
   {
-    icon: Droplets,
-    title: "Irrigation Solutions",
-    description: "Modern irrigation techniques including drip, sprinkler, and smart water management systems.",
-  },
-  {
-    icon: Truck,
-    title: "Supply Chain",
-    description: "Connect directly with buyers, wholesalers, and retailers to get the best prices for your produce.",
-  },
-  {
-    icon: BookOpen,
-    title: "Government Schemes",
-    description: "Information about agricultural subsidies, loans, insurance, and government welfare schemes for farmers.",
+    icon: MessageSquare,
+    title: "AI Farm Assistant",
+    description: "Get instant answers to your farming questions from our intelligent AI assistant.",
+    color: "text-violet-500",
+    bg: "bg-violet-50",
   },
   {
     icon: Users,
-    title: "Community Forum",
-    description: "Join a community of farmers to share knowledge, experiences, and best practices with peers.",
+    title: "Community Hub",
+    description: "Connect with farmers, share success stories, and learn from experienced agriculturists.",
+    color: "text-orange-500",
+    bg: "bg-orange-50",
+  },
+  {
+    icon: Calendar,
+    title: "Government Schemes",
+    description: "Discover and apply for agricultural schemes and subsidies from state and central government.",
+    color: "text-red-500",
+    bg: "bg-red-50",
   },
 ];
 
@@ -54,16 +56,13 @@ const ServicesSection = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <span className="text-secondary font-medium text-sm uppercase tracking-wider">What We Offer</span>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-2 mb-4">
-            Comprehensive Farming Services
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            From crop planning to market access, we provide everything a modern farmer needs to succeed.
+          <h2 className="section-title">Everything You Need to Farm Better</h2>
+          <p className="section-subtitle">
+            Access powerful tools and insights designed specifically for Indian farmers
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service, i) => (
             <motion.div
               key={service.title}
@@ -71,12 +70,12 @@ const ServicesSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="bg-card rounded-xl p-6 shadow-card hover:shadow-card-hover transition-shadow border border-border group cursor-pointer"
+              className="service-card"
             >
-              <div className="w-12 h-12 rounded-lg bg-accent flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                <service.icon className="w-6 h-6 text-accent-foreground group-hover:text-primary-foreground" />
+              <div className={`w-12 h-12 rounded-xl ${service.bg} flex items-center justify-center mb-5`}>
+                <service.icon className={`w-6 h-6 ${service.color}`} />
               </div>
-              <h3 className="font-display text-lg font-semibold text-foreground mb-2">{service.title}</h3>
+              <h3 className="font-display text-xl font-bold text-foreground mb-2">{service.title}</h3>
               <p className="text-muted-foreground text-sm leading-relaxed">{service.description}</p>
             </motion.div>
           ))}
