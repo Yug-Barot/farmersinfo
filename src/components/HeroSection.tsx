@@ -1,16 +1,15 @@
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Sun, Droplets, TrendingUp, ArrowRight, Sprout } from "lucide-react";
 
 const HeroSection = () => {
   return (
     <section id="home" className="gradient-hero min-h-[90vh] flex items-center pt-14 relative overflow-hidden">
-      {/* Decorative circles */}
       <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-primary-foreground/5 -mr-40 hidden md:block" />
       <div className="absolute right-20 top-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full bg-primary-foreground/5 hidden md:block" />
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left content */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -28,16 +27,15 @@ const HeroSection = () => {
               Your complete farming companion with AI-powered insights, real-time weather, market prices, and a vibrant community of farmers.
             </p>
             <div className="flex flex-wrap gap-4">
-              <a href="#services" className="btn-white">
+              <Link to="/weather" className="btn-white">
                 Get Started Free <ArrowRight className="w-4 h-4" />
-              </a>
-              <a href="#crops" className="btn-outline-white">
+              </Link>
+              <Link to="/crops" className="btn-outline-white">
                 Explore Crops
-              </a>
+              </Link>
             </div>
           </motion.div>
 
-          {/* Right widgets */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -65,7 +63,6 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Wave bottom */}
       <div className="absolute bottom-0 left-0 right-0">
         <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
           <path d="M0 40C360 80 720 0 1080 40C1260 60 1380 50 1440 40V80H0V40Z" fill="hsl(0 0% 98%)" />
