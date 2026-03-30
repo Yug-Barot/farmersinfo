@@ -25,7 +25,7 @@ const Navbar = () => {
           <div className="w-8 h-8 bg-secondary rounded-md flex items-center justify-center">
             <Leaf className="w-5 h-5 text-secondary-foreground" />
           </div>
-          <span className="text-secondary">Agri</span>Smart
+          <span className="text-secondary">Crop</span>Wise
         </Link>
 
         <div className="hidden lg:flex items-center gap-6">
@@ -49,7 +49,7 @@ const Navbar = () => {
             Sign in
           </span>
           <Link
-            to="/weather"
+            to="/ai-assistant"
             className="bg-secondary text-secondary-foreground px-5 py-2 rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity"
           >
             Get Started
@@ -82,7 +82,7 @@ const Navbar = () => {
                   {link.label}
                 </Link>
               ))}
-              <Link to="/weather" className="btn-white text-sm mt-2 justify-center" onClick={() => setOpen(false)}>
+              <Link to="/ai-assistant" className="btn-white text-sm mt-2 justify-center" onClick={() => setOpen(false)}>
                 Get Started <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

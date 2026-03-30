@@ -10,9 +10,9 @@ const CTASection = () => (
           Ready to Transform Your Farming?
         </h2>
         <p className="text-primary-foreground/75 max-w-xl mx-auto mb-8 text-lg">
-          Join thousands of farmers already using AgriSmart to increase their yields and profits
+          Join thousands of farmers already using Crop Wise to increase their yields and profits
         </p>
-        <Link to="/weather" className="btn-white text-lg">
+        <Link to="/ai-assistant" className="btn-white text-lg">
           Start Your Free Account <ArrowRight className="w-5 h-5" />
         </Link>
       </motion.div>
