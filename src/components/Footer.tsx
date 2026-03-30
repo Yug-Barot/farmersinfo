@@ -1,16 +1,17 @@
+import { Link } from "react-router-dom";
 import { Leaf, Mail, Phone, MapPin, Facebook, Twitter, Youtube } from "lucide-react";
 
 const Footer = () => (
-  <footer id="contact" className="bg-foreground text-background py-16">
+  <footer className="bg-foreground text-background py-16">
     <div className="container mx-auto px-4">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
         <div>
-          <div className="flex items-center gap-2 font-display text-xl font-bold mb-4">
+          <Link to="/" className="flex items-center gap-2 font-display text-xl font-bold mb-4">
             <div className="w-8 h-8 bg-secondary rounded-md flex items-center justify-center">
               <Leaf className="w-5 h-5 text-secondary-foreground" />
             </div>
             <span className="text-secondary">Agri</span>Smart
-          </div>
+          </Link>
           <p className="text-background/50 text-sm leading-relaxed mb-4">
             Empowering Indian farmers with AI-powered insights, live weather data, and market intelligence for smarter farming decisions.
           </p>
@@ -26,9 +27,15 @@ const Footer = () => (
         <div>
           <h4 className="font-display font-semibold text-secondary mb-4">Quick Links</h4>
           <ul className="space-y-2.5 text-sm text-background/50">
-            {["Live Weather", "Market Prices", "Crop Database", "AI Farm Assistant", "Community Hub"].map((l) => (
-              <li key={l}>
-                <a href="#" className="hover:text-secondary transition-colors">{l}</a>
+            {[
+              { label: "Live Weather", to: "/weather" },
+              { label: "Market Prices", to: "/market-prices" },
+              { label: "Crop Database", to: "/crops" },
+              { label: "AI Farm Assistant", to: "/ai-assistant" },
+              { label: "Community Hub", to: "/community" },
+            ].map((l) => (
+              <li key={l.label}>
+                <Link to={l.to} className="hover:text-secondary transition-colors">{l.label}</Link>
               </li>
             ))}
           </ul>
@@ -37,9 +44,15 @@ const Footer = () => (
         <div>
           <h4 className="font-display font-semibold text-secondary mb-4">Resources</h4>
           <ul className="space-y-2.5 text-sm text-background/50">
-            {["Government Schemes", "Learning Hub", "Crop Finder", "Soil Analysis", "Profit Calculator"].map((s) => (
-              <li key={s}>
-                <a href="#" className="hover:text-secondary transition-colors">{s}</a>
+            {[
+              { label: "Government Schemes", to: "/schemes" },
+              { label: "Learning Hub", to: "/learning" },
+              { label: "Crop Finder", to: "/crops" },
+              { label: "AI Assistant", to: "/ai-assistant" },
+              { label: "Community", to: "/community" },
+            ].map((s) => (
+              <li key={s.label}>
+                <Link to={s.to} className="hover:text-secondary transition-colors">{s.label}</Link>
               </li>
             ))}
           </ul>
@@ -50,13 +63,13 @@ const Footer = () => (
           <ul className="space-y-3 text-sm text-background/50">
             <li className="flex items-start gap-2">
               <MapPin className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" />
-              AgriSmart HQ, Krishi Bhawan, New Delhi - 110001, India
+              Ganpat University
             </li>
             <li className="flex items-center gap-2">
-              <Phone className="w-4 h-4 text-secondary" /> 1800-180-1551
+              <Phone className="w-4 h-4 text-secondary" /> 9558053175
             </li>
             <li className="flex items-center gap-2">
-              <Mail className="w-4 h-4 text-secondary" /> support@agrismart.in
+              <Mail className="w-4 h-4 text-secondary" /> dhruvatishpandya@gmail.com
             </li>
           </ul>
         </div>
@@ -69,7 +82,7 @@ const Footer = () => (
         <div className="flex gap-6 text-sm text-background/30">
           <a href="#" className="hover:text-background/60 transition-colors">Privacy Policy</a>
           <a href="#" className="hover:text-background/60 transition-colors">Terms of Service</a>
-          <a href="#" className="hover:text-background/60 transition-colors">Support</a>
+          <a href="#" className="hover:text-background/60 transition-colors">About</a>
         </div>
       </div>
     </div>
