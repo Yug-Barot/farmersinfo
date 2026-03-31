@@ -12,6 +12,7 @@ import Schemes from "./pages/Schemes";
 import Community from "./pages/Community";
 import Learning from "./pages/Learning";
 import AIAssistant from "./pages/AIAssistant";
+import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/community" element={<Community />} />
           <Route path="/learning" element={<Learning />} />
           <Route path="/ai-assistant" element={<AIAssistant />} />
+          <Route path="/login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

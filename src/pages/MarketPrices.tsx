@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { TrendingUp, TrendingDown, Search, MapPin, IndianRupee, FileText } from "lucide-react";
+import { TrendingUp, TrendingDown, Search, MapPin, IndianRupee } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -27,6 +28,7 @@ const allPrices = [
 ];
 
 const MarketPrices = () => {
+  const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const [tab, setTab] = useState<"market" | "msp">("market");
 
@@ -43,16 +45,15 @@ const MarketPrices = () => {
       <Navbar />
       <div className="pt-20 pb-16">
         <div className="container mx-auto px-4 max-w-5xl">
-          <h1 className="text-3xl font-bold text-foreground font-display mb-2">Market Prices</h1>
-          <p className="text-muted-foreground mb-8">Real time mandi prices and MSP rates across India</p>
+          <h1 className="text-3xl font-bold text-foreground font-display mb-2">{t("market.title")}</h1>
+          <p className="text-muted-foreground mb-8">{t("market.subtitle")}</p>
 
-          {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             {[
-              { label: "Total Markets", value: "20", icon: MapPin, color: "text-primary" },
-              { label: "Avg Price", value: `₹${avgPrice}`, icon: IndianRupee, color: "text-primary" },
-              { label: "Prices Up", value: String(pricesUp), icon: TrendingUp, color: "text-primary" },
-              { label: "Prices Down", value: String(pricesDown), icon: TrendingDown, color: "text-destructive" },
+              { label: t("market.totalMarkets"), value: "20", icon: MapPin, color: "text-primary" },
+              { label: t("market.avgPrice"), value: `₹${avgPrice}`, icon: IndianRupee, color: "text-primary" },
+              { label: t("market.pricesUp"), value: String(pricesUp), icon: TrendingUp, color: "text-primary" },
+              { label: t("market.pricesDown"), value: String(pricesDown), icon: TrendingDown, color: "text-destructive" },
             ].map((s) => (
               <div key={s.label} className="bg-card border border-border rounded-xl p-5 flex items-center justify-between">
                 <div>
@@ -64,65 +65,40 @@ const MarketPrices = () => {
             ))}
           </div>
 
-          {/* Tabs */}
           <div className="flex gap-2 mb-4">
-            <button onClick={() => setTab("market")} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${tab === "market" ? "bg-primary text-primary-foreground" : "bg-card border border-border text-foreground"}`}>
-              Market Prices
-            </button>
-            <button onClick={() => setTab("msp")} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${tab === "msp" ? "bg-primary text-primary-foreground" : "bg-card border border-border text-foreground"}`}>
-              MSP Rates
-            </button>
+            <button onClick={() => setTab("market")} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${tab === "market" ? "bg-primary text-primary-foreground" : "bg-card border border-border text-foreground"}`}>{t("market.marketPrices")}</button>
+            <button onClick={() => setTab("msp")} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${tab === "msp" ? "bg-primary text-primary-foreground" : "bg-card border border-border text-foreground"}`}>{t("market.mspRates")}</button>
           </div>
 
-          {/* Search */}
           <div className="flex items-center gap-2 bg-card border border-border rounded-lg px-4 py-2.5 mb-6 max-w-md">
             <Search className="w-4 h-4 text-muted-foreground" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by crop or market..."
-              className="bg-transparent outline-none text-foreground text-sm w-full"
-            />
+            <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t("market.searchPlaceholder")} className="bg-transparent outline-none text-foreground text-sm w-full" />
           </div>
 
-          {/* Table */}
           <div className="bg-card border border-border rounded-2xl overflow-hidden">
             <div className="p-6 border-b border-border">
-              <h2 className="font-bold text-foreground text-lg">Current Prices</h2>
-              <p className="text-sm text-muted-foreground">Showing {filtered.length} of {allPrices.length} records</p>
+              <h2 className="font-bold text-foreground text-lg">{t("market.currentPrices")}</h2>
+              <p className="text-sm text-muted-foreground">{t("market.showing")} {filtered.length} {t("market.of")} {allPrices.length} {t("market.records")}</p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-border">
-                    <th className="text-left px-6 py-3 text-sm font-semibold text-foreground">Crop</th>
-                    <th className="text-left px-6 py-3 text-sm font-semibold text-foreground">Market</th>
-                    <th className="text-left px-6 py-3 text-sm font-semibold text-foreground">Price</th>
-                    <th className="text-left px-6 py-3 text-sm font-semibold text-foreground">Change</th>
-                    <th className="text-left px-6 py-3 text-sm font-semibold text-foreground">Trend</th>
+                    <th className="text-left px-6 py-3 text-sm font-semibold text-foreground">{t("market.crop")}</th>
+                    <th className="text-left px-6 py-3 text-sm font-semibold text-foreground">{t("market.marketCol")}</th>
+                    <th className="text-left px-6 py-3 text-sm font-semibold text-foreground">{t("market.price")}</th>
+                    <th className="text-left px-6 py-3 text-sm font-semibold text-foreground">{t("market.change")}</th>
+                    <th className="text-left px-6 py-3 text-sm font-semibold text-foreground">{t("market.trend")}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filtered.map((item) => (
                     <tr key={item.crop} className="border-b border-border hover:bg-muted/50 transition-colors">
                       <td className="px-6 py-4 font-semibold text-primary text-sm">{item.crop}</td>
-                      <td className="px-6 py-4">
-                        <span className="bg-muted text-muted-foreground text-xs px-2 py-1 rounded">{item.market}</span>
-                      </td>
+                      <td className="px-6 py-4"><span className="bg-muted text-muted-foreground text-xs px-2 py-1 rounded">{item.market}</span></td>
                       <td className="px-6 py-4 font-bold text-foreground text-sm">{item.price}</td>
-                      <td className="px-6 py-4">
-                        <span className={`text-sm font-medium ${item.trend === "up" ? "text-primary" : "text-destructive"}`}>
-                          {item.change}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        {item.trend === "up" ? (
-                          <TrendingUp className="w-4 h-4 text-primary" />
-                        ) : (
-                          <TrendingDown className="w-4 h-4 text-destructive" />
-                        )}
-                      </td>
+                      <td className="px-6 py-4"><span className={`text-sm font-medium ${item.trend === "up" ? "text-primary" : "text-destructive"}`}>{item.change}</span></td>
+                      <td className="px-6 py-4">{item.trend === "up" ? <TrendingUp className="w-4 h-4 text-primary" /> : <TrendingDown className="w-4 h-4 text-destructive" />}</td>
                     </tr>
                   ))}
                 </tbody>
