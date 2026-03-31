@@ -1,0 +1,158 @@
+{
+  "nav": {
+    "home": "Home",
+    "weather": "Weather",
+    "marketPrices": "Market Prices",
+    "crops": "Crops",
+    "aiAssistant": "AI Assistant",
+    "community": "Community",
+    "learning": "Learning",
+    "schemes": "Schemes",
+    "signIn": "Sign in",
+    "getStarted": "Get Started",
+    "language": "Language"
+  },
+  "hero": {
+    "badge": "Smart Farming for Modern India",
+    "title": "Grow Smarter with",
+    "brandName": "Crop Wise",
+    "subtitle": "Your complete farming companion with AI-powered insights, real-time weather, market prices, and a vibrant community of farmers.",
+    "getStartedFree": "Get Started Free",
+    "exploreCrops": "Explore Crops",
+    "sunny": "Sunny",
+    "humidity": "Humidity",
+    "wheatPrice": "Wheat Price"
+  },
+  "stats": {
+    "activeFarmers": "Active Farmers",
+    "cropVarieties": "Crop Varieties",
+    "mandisTracked": "Mandis Tracked",
+    "aiSupport": "AI Support"
+  },
+  "services": {
+    "title": "Everything You Need to Farm Better",
+    "subtitle": "Access powerful tools and insights designed specifically for Indian farmers",
+    "weather": { "title": "Weather Forecasts", "desc": "Get accurate 7-day weather forecasts and farming advisories tailored to your location." },
+    "market": { "title": "Market Prices", "desc": "Track real-time mandi prices across India and find the best markets for your produce." },
+    "crops": { "title": "Crop Guide", "desc": "Comprehensive information on 20+ crops including soil requirements, climate, and seasons." },
+    "ai": { "title": "AI Farm Assistant", "desc": "Get instant answers to your farming questions from our intelligent AI assistant." },
+    "community": { "title": "Community Hub", "desc": "Connect with farmers, share success stories, and learn from experienced agriculturists." },
+    "schemes": { "title": "Government Schemes", "desc": "Discover and apply for agricultural schemes and subsidies from state and central government." }
+  },
+  "cta": {
+    "title": "Ready to Transform Your Farming?",
+    "subtitle": "Join thousands of farmers already using Crop Wise to increase their yields and profits",
+    "button": "Start Your Free Account"
+  },
+  "footer": {
+    "description": "Empowering Indian farmers with AI-powered insights, live weather data, and market intelligence for smarter farming decisions.",
+    "quickLinks": "Quick Links",
+    "resources": "Resources",
+    "contactUs": "Contact Us",
+    "liveWeather": "Live Weather",
+    "cropDatabase": "Crop Database",
+    "aiFarmAssistant": "AI Farm Assistant",
+    "communityHub": "Community Hub",
+    "govSchemes": "Government Schemes",
+    "learningHub": "Learning Hub",
+    "cropFinder": "Crop Finder",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "about": "About",
+    "allRightsReserved": "All rights reserved."
+  },
+  "weather": {
+    "title": "Weather Forecast",
+    "subtitle": "Get accurate weather data and farming advisories for your location",
+    "searchPlaceholder": "Enter city or location...",
+    "currentWeather": "Current Weather",
+    "feelsLike": "Feels like",
+    "humidityLabel": "Humidity",
+    "windLabel": "Wind",
+    "farmingAdvisory": "Farming Advisory",
+    "advisorySubtitle": "Recommendations based on current weather",
+    "favorableWeather": "🌾 Weather conditions are favorable for farming activities.",
+    "fiveDayForecast": "5-Day Forecast",
+    "planAhead": "Plan your farming activities ahead",
+    "loading": "Searching weather data...",
+    "error": "Could not fetch weather data. Please try again.",
+    "tomorrow": "Tomorrow",
+    "day": "Day"
+  },
+  "market": {
+    "title": "Market Prices",
+    "subtitle": "Real time mandi prices and MSP rates across India",
+    "totalMarkets": "Total Markets",
+    "avgPrice": "Avg Price",
+    "pricesUp": "Prices Up",
+    "pricesDown": "Prices Down",
+    "marketPrices": "Market Prices",
+    "mspRates": "MSP Rates",
+    "searchPlaceholder": "Search by crop or market...",
+    "currentPrices": "Current Prices",
+    "showing": "Showing",
+    "of": "of",
+    "records": "records",
+    "crop": "Crop",
+    "marketCol": "Market",
+    "price": "Price",
+    "change": "Change",
+    "trend": "Trend"
+  },
+  "crops": {
+    "title": "Crop Guide",
+    "subtitle": "Comprehensive information on major crops grown in India",
+    "searchPlaceholder": "Search crops...",
+    "allSeasons": "All Seasons"
+  },
+  "schemes": {
+    "title": "Government Schemes",
+    "subtitle": "Explore agricultural schemes and subsidies for farmers",
+    "totalSchemes": "Total Schemes Available",
+    "searchPlaceholder": "Search schemes..."
+  },
+  "community": {
+    "title": "Community Hub",
+    "subtitle": "Connect, share, and learn from fellow farmers",
+    "shareStory": "Share Story",
+    "startDiscussion": "Start Discussion",
+    "totalPosts": "Total Posts",
+    "successStories": "Success Stories",
+    "discussions": "Discussions",
+    "totalLikes": "Total Likes",
+    "emptyState": "No stories yet. Be the first to share!"
+  },
+  "learning": {
+    "title": "Learning Hub",
+    "subtitle": "Free educational resources to help you become a smarter, more profitable farmer",
+    "cropGuides": "Crop Growing Guides",
+    "cropGuidesDesc": "Step-by-step guides for growing 20+ crops with seasonal calendars, soil preparation, and harvest techniques.",
+    "videoTutorials": "Video Tutorials",
+    "videoTutorialsDesc": "Watch expert farmers and agricultural scientists demonstrate modern farming techniques.",
+    "research": "Research & Reports",
+    "researchDesc": "Access the latest agricultural research, market analysis reports, and policy updates.",
+    "innovations": "Farming Innovations",
+    "innovationsDesc": "Learn about the latest agricultural technologies transforming farming across India."
+  },
+  "ai": {
+    "title": "AI Farm Assistant",
+    "subtitle": "Ask any farming question in English or Hindi",
+    "inputPlaceholder": "Type your farming question...",
+    "greeting": "Namaste! 🌾 I'm your AI Farm Assistant. Ask me anything about crops, weather, market prices, government schemes, or farming techniques. How can I help you today?"
+  },
+  "login": {
+    "title": "Welcome to Crop Wise",
+    "subtitle": "Sign in to access your farming dashboard",
+    "email": "Email Address",
+    "password": "Password",
+    "signIn": "Sign In",
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign Up",
+    "createAccount": "Create Account",
+    "fullName": "Full Name",
+    "confirmPassword": "Confirm Password",
+    "haveAccount": "Already have an account?",
+    "or": "or"
+  }
+}

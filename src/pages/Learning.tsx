@@ -1,60 +1,35 @@
 import { BookOpen, Video, FileText, Lightbulb, ExternalLink } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const resources = [
-  {
-    icon: BookOpen,
-    title: "Crop Growing Guides",
-    description: "Step-by-step guides for growing 20+ crops with seasonal calendars, soil preparation, and harvest techniques.",
-    items: ["Rice Cultivation Guide", "Wheat Growing Manual", "Vegetable Farming Tips", "Organic Practices"],
-  },
-  {
-    icon: Video,
-    title: "Video Tutorials",
-    description: "Watch expert farmers and agricultural scientists demonstrate modern farming techniques.",
-    items: ["Drip Irrigation Setup", "Pest Identification", "Soil Testing Methods", "Composting Basics"],
-  },
-  {
-    icon: FileText,
-    title: "Research & Reports",
-    description: "Access the latest agricultural research, market analysis reports, and policy updates.",
-    items: ["Crop Price Trends 2026", "Climate Impact Report", "Organic Market Analysis", "Subsidy Updates"],
-  },
-  {
-    icon: Lightbulb,
-    title: "Farming Innovations",
-    description: "Learn about the latest agricultural technologies transforming farming across India.",
-    items: ["Drone Spraying", "IoT Soil Sensors", "AI Crop Diagnosis", "Vertical Farming"],
-  },
-];
-
 const Learning = () => {
+  const { t } = useTranslation();
+
+  const resources = [
+    { icon: BookOpen, title: t("learning.cropGuides"), description: t("learning.cropGuidesDesc"), items: ["Rice Cultivation Guide", "Wheat Growing Manual", "Vegetable Farming Tips", "Organic Practices"] },
+    { icon: Video, title: t("learning.videoTutorials"), description: t("learning.videoTutorialsDesc"), items: ["Drip Irrigation Setup", "Pest Identification", "Soil Testing Methods", "Composting Basics"] },
+    { icon: FileText, title: t("learning.research"), description: t("learning.researchDesc"), items: ["Crop Price Trends 2026", "Climate Impact Report", "Organic Market Analysis", "Subsidy Updates"] },
+    { icon: Lightbulb, title: t("learning.innovations"), description: t("learning.innovationsDesc"), items: ["Drone Spraying", "IoT Soil Sensors", "AI Crop Diagnosis", "Vertical Farming"] },
+  ];
+
   return (
     <div className="min-h-screen bg-muted">
       <Navbar />
       <div className="pt-20 pb-16">
         <div className="container mx-auto px-4 max-w-5xl">
-          <h1 className="text-3xl font-bold text-foreground font-display mb-2">Learning Hub</h1>
-          <p className="text-muted-foreground mb-10">Free educational resources to help you become a smarter, more profitable farmer</p>
-
+          <h1 className="text-3xl font-bold text-foreground font-display mb-2">{t("learning.title")}</h1>
+          <p className="text-muted-foreground mb-10">{t("learning.subtitle")}</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {resources.map((res) => (
               <div key={res.title} className="bg-card border border-border rounded-2xl p-6 hover:shadow-card-hover transition-all">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center flex-shrink-0">
-                    <res.icon className="w-6 h-6 text-primary" />
-                  </div>
+                  <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center flex-shrink-0"><res.icon className="w-6 h-6 text-primary" /></div>
                   <div className="flex-1">
                     <h3 className="font-display text-lg font-bold text-foreground mb-2">{res.title}</h3>
                     <p className="text-sm text-muted-foreground mb-4">{res.description}</p>
                     <ul className="space-y-2">
-                      {res.items.map((item) => (
-                        <li key={item} className="text-sm text-primary flex items-center gap-2 hover:underline cursor-pointer">
-                          <ExternalLink className="w-3 h-3" />
-                          {item}
-                        </li>
-                      ))}
+                      {res.items.map((item) => (<li key={item} className="text-sm text-primary flex items-center gap-2 hover:underline cursor-pointer"><ExternalLink className="w-3 h-3" />{item}</li>))}
                     </ul>
                   </div>
                 </div>
