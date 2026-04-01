@@ -1,18 +1,45 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Leaf, Mail, Lock, User, ArrowRight } from "lucide-react";
+import { Leaf, Mail, Lock, User, ArrowRight, Loader2 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 
 const Login = () => {
   const { t } = useTranslation();
+  const { signIn, signUp } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(isSignUp ? "Sign up functionality requires backend integration." : "Sign in functionality requires backend integration.");
+    if (isSignUp && password !== confirmPassword) {
+      toast({ title: "Passwords don't match", variant: "destructive" });
+      return;
+    }
+    setLoading(true);
+    if (isSignUp) {
+      const { error } = await signUp(email, password, name);
+      if (error) {
+        toast({ title: "Sign up failed", description: error, variant: "destructive" });
+      } else {
+        toast({ title: "Account created! 🌱", description: "Check your email to confirm your account." });
+      }
+    } else {
+      const { error } = await signIn(email, password);
+      if (error) {
+        toast({ title: "Sign in failed", description: error, variant: "destructive" });
+      } else {
+        navigate("/");
+      }
+    }
+    setLoading(false);
   };
 
   return (
@@ -52,7 +79,7 @@ const Login = () => {
               <label className="text-sm font-medium text-foreground mb-1.5 block">{t("login.password")}</label>
               <div className="flex items-center gap-2 bg-muted border border-border rounded-lg px-3 py-2.5">
                 <Lock className="w-4 h-4 text-muted-foreground" />
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder={t("login.password")} className="bg-transparent outline-none text-foreground text-sm w-full" required />
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder={t("login.password")} className="bg-transparent outline-none text-foreground text-sm w-full" required minLength={6} />
               </div>
             </div>
             {isSignUp && (
@@ -60,18 +87,13 @@ const Login = () => {
                 <label className="text-sm font-medium text-foreground mb-1.5 block">{t("login.confirmPassword")}</label>
                 <div className="flex items-center gap-2 bg-muted border border-border rounded-lg px-3 py-2.5">
                   <Lock className="w-4 h-4 text-muted-foreground" />
-                  <input type="password" placeholder={t("login.confirmPassword")} className="bg-transparent outline-none text-foreground text-sm w-full" required />
+                  <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder={t("login.confirmPassword")} className="bg-transparent outline-none text-foreground text-sm w-full" required minLength={6} />
                 </div>
               </div>
             )}
 
-            {!isSignUp && (
-              <div className="text-right">
-                <button type="button" className="text-sm text-primary hover:underline">{t("login.forgotPassword")}</button>
-              </div>
-            )}
-
-            <button type="submit" className="w-full bg-primary text-primary-foreground py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+            <button type="submit" disabled={loading} className="w-full bg-primary text-primary-foreground py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50">
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
               {isSignUp ? t("login.createAccount") : t("login.signIn")} <ArrowRight className="w-4 h-4" />
             </button>
           </form>
