@@ -1,26 +1,14 @@
-import { useState } from "react";
-import { CloudSun, CloudRain, Sun, Cloud, Wind, Droplets, MapPin, Search, CheckCircle, Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { CloudSun, CloudRain, Sun, Cloud, Wind, Droplets, MapPin, Search, CheckCircle, Loader2, Navigation } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 interface WeatherData {
-  city: string;
-  temp: number;
-  feelsLike: number;
-  humidity: number;
-  wind: number;
-  condition: string;
-  icon: string;
+  city: string; temp: number; feelsLike: number; humidity: number; wind: number; condition: string; icon: string; description: string;
+  pressure: number; visibility: number;
 }
-
-interface ForecastDay {
-  day: string;
-  temp: number;
-  low: number;
-  condition: string;
-  icon: string;
-}
+interface ForecastDay { day: string; date: string; temp: number; low: number; condition: string; icon: string; humidity: number; }
 
 const getWeatherIcon = (iconCode: string) => {
   if (iconCode?.includes("01")) return Sun;
@@ -30,6 +18,14 @@ const getWeatherIcon = (iconCode: string) => {
   return Cloud;
 };
 
+const getAdvisory = (condition: string, temp: number) => {
+  if (condition.includes("Rain")) return "🌧️ Rain expected. Avoid spraying pesticides. Good time for sowing if soil is prepared.";
+  if (temp > 38) return "🌡️ Extreme heat. Irrigate crops early morning/evening. Provide shade to nurseries.";
+  if (temp < 10) return "❄️ Cold wave risk. Cover sensitive crops. Avoid irrigation in frost-prone hours.";
+  if (condition === "Clear" && temp > 25 && temp < 35) return "🌾 Weather conditions are favorable for farming activities. Good for spraying and harvesting.";
+  return "🌾 Weather conditions are moderate. Monitor crops regularly.";
+};
+
 const Weather = () => {
   const { t } = useTranslation();
   const [city, setCity] = useState("Kalol");
@@ -37,40 +33,40 @@ const Weather = () => {
   const [forecast, setForecast] = useState<ForecastDay[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [detectingLocation, setDetectingLocation] = useState(false);
 
   const API_KEY = "bd5e378503939ddaee76f12ad7a97608";
 
-  const fetchWeather = async () => {
+  const fetchWeather = async (query: string) => {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`);
+      const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?${query}&appid=${API_KEY}&units=metric`);
       if (!res.ok) throw new Error("City not found");
       const data = await res.json();
+      setCity(data.name);
       setWeather({
-        city: data.name,
-        temp: Math.round(data.main.temp),
-        feelsLike: Math.round(data.main.feels_like),
-        humidity: data.main.humidity,
-        wind: data.wind.speed,
-        condition: data.weather[0].main,
-        icon: data.weather[0].icon,
+        city: data.name, temp: Math.round(data.main.temp), feelsLike: Math.round(data.main.feels_like),
+        humidity: data.main.humidity, wind: data.wind.speed, condition: data.weather[0].main,
+        icon: data.weather[0].icon, description: data.weather[0].description,
+        pressure: data.main.pressure, visibility: Math.round((data.visibility || 10000) / 1000),
       });
 
-      const fRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`);
+      const fRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?${query}&appid=${API_KEY}&units=metric`);
       const fData = await fRes.json();
       const daily: ForecastDay[] = [];
       const seen = new Set<string>();
+      const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
       for (const item of fData.list) {
         const date = item.dt_txt.split(" ")[0];
-        if (!seen.has(date) && daily.length < 5) {
+        if (!seen.has(date) && daily.length < 7) {
           seen.add(date);
+          const d = new Date(item.dt_txt);
           daily.push({
-            day: daily.length === 0 ? t("weather.tomorrow") : `${t("weather.day")} ${daily.length + 2}`,
-            temp: Math.round(item.main.temp_max),
-            low: Math.round(item.main.temp_min),
-            condition: item.weather[0].main,
-            icon: item.weather[0].icon,
+            day: daily.length === 0 ? t("weather.tomorrow") : dayNames[d.getDay()],
+            date: `${d.getDate()}/${d.getMonth() + 1}`,
+            temp: Math.round(item.main.temp_max), low: Math.round(item.main.temp_min),
+            condition: item.weather[0].main, icon: item.weather[0].icon, humidity: item.main.humidity,
           });
         }
       }
@@ -82,15 +78,20 @@ const Weather = () => {
     }
   };
 
-  const displayWeather = weather || { city, temp: 27, feelsLike: 29, humidity: 55, wind: 3.5, condition: "Clear", icon: "01d" };
-  const displayForecast = forecast.length > 0 ? forecast : [
-    { day: t("weather.tomorrow"), temp: 30, low: 25, condition: "Cloudy", icon: "04d" },
-    { day: `${t("weather.day")} 3`, temp: 29, low: 24, condition: "Clear", icon: "01d" },
-    { day: `${t("weather.day")} 4`, temp: 31, low: 26, condition: "Sunny", icon: "01d" },
-    { day: `${t("weather.day")} 5`, temp: 28, low: 23, condition: "Rain", icon: "10d" },
-    { day: `${t("weather.day")} 6`, temp: 29, low: 25, condition: "Clouds", icon: "03d" },
-  ];
-  const WeatherIcon = getWeatherIcon(displayWeather.icon);
+  const detectLocation = () => {
+    if (!navigator.geolocation) { setError("Geolocation not supported"); return; }
+    setDetectingLocation(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => { fetchWeather(`lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`); setDetectingLocation(false); },
+      () => { setError("Location access denied. Search manually."); setDetectingLocation(false); }
+    );
+  };
+
+  useEffect(() => { detectLocation(); }, []);
+
+  const handleSearch = () => fetchWeather(`q=${city}`);
+  const displayWeather = weather;
+  const WeatherIcon = displayWeather ? getWeatherIcon(displayWeather.icon) : Sun;
 
   return (
     <div className="min-h-screen bg-muted">
@@ -103,76 +104,90 @@ const Weather = () => {
           <div className="flex gap-3 mb-8">
             <div className="flex items-center gap-2 bg-card border border-border rounded-lg px-4 py-2.5 flex-1 max-w-md">
               <MapPin className="w-4 h-4 text-muted-foreground" />
-              <input type="text" value={city} onChange={(e) => setCity(e.target.value)} onKeyDown={(e) => e.key === "Enter" && fetchWeather()}
+              <input type="text" value={city} onChange={(e) => setCity(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 placeholder={t("weather.searchPlaceholder")} className="bg-transparent outline-none text-foreground text-sm w-full" />
             </div>
-            <button onClick={fetchWeather} className="bg-primary text-primary-foreground px-4 py-2.5 rounded-lg hover:opacity-90 transition-opacity">
+            <button onClick={handleSearch} className="bg-primary text-primary-foreground px-4 py-2.5 rounded-lg hover:opacity-90 transition-opacity">
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Search className="w-5 h-5" />}
+            </button>
+            <button onClick={detectLocation} disabled={detectingLocation} className="bg-card border border-border text-foreground px-4 py-2.5 rounded-lg hover:bg-muted transition-colors">
+              {detectingLocation ? <Loader2 className="w-5 h-5 animate-spin" /> : <Navigation className="w-5 h-5" />}
             </button>
           </div>
 
           {error && <p className="text-destructive text-sm mb-4">{error}</p>}
 
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
-            <div className="md:col-span-3 bg-card border border-border rounded-2xl p-8 bg-gradient-to-br from-orange-50/50 to-transparent">
-              <p className="text-sm text-primary font-medium mb-1">{t("weather.currentWeather")}</p>
-              <div className="flex items-center gap-1 mb-4">
-                <MapPin className="w-4 h-4 text-foreground" />
-                <span className="font-bold text-foreground text-lg">{displayWeather.city}</span>
-              </div>
-              <div className="flex items-start justify-between mb-6">
-                <div>
-                  <div className="text-6xl font-bold text-foreground">{displayWeather.temp}°</div>
-                  <div className="text-foreground font-semibold mt-1">{displayWeather.condition}</div>
-                  <div className="text-muted-foreground text-sm">{t("weather.feelsLike")} {displayWeather.feelsLike}°C</div>
-                </div>
-                <WeatherIcon className="w-16 h-16 text-secondary" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-muted/60 rounded-xl p-4 text-center">
-                  <Droplets className="w-6 h-6 text-blue-500 mx-auto mb-1" />
-                  <div className="text-sm text-muted-foreground">{t("weather.humidityLabel")}</div>
-                  <div className="font-bold text-foreground">{displayWeather.humidity}%</div>
-                </div>
-                <div className="bg-muted/60 rounded-xl p-4 text-center">
-                  <Wind className="w-6 h-6 text-muted-foreground mx-auto mb-1" />
-                  <div className="text-sm text-muted-foreground">{t("weather.windLabel")}</div>
-                  <div className="font-bold text-foreground">{displayWeather.wind} m/s</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="md:col-span-2 bg-card border border-border rounded-2xl p-8">
-              <div className="flex items-center gap-2 mb-2">
-                <CheckCircle className="w-5 h-5 text-primary" />
-                <h3 className="font-bold text-foreground text-lg font-display">{t("weather.farmingAdvisory")}</h3>
-              </div>
-              <p className="text-muted-foreground text-sm mb-4">{t("weather.advisorySubtitle")}</p>
-              <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 flex items-center gap-3">
-                <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-                <span className="text-sm text-foreground">{t("weather.favorableWeather")}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-card border border-border rounded-2xl p-8">
-            <h2 className="text-xl font-bold text-foreground font-display mb-1">{t("weather.fiveDayForecast")}</h2>
-            <p className="text-muted-foreground text-sm mb-6">{t("weather.planAhead")}</p>
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-              {displayForecast.map((day) => {
-                const DayIcon = getWeatherIcon(day.icon);
-                return (
-                  <div key={day.day} className="bg-muted/50 rounded-xl p-5 text-center">
-                    <div className="font-semibold text-foreground text-sm mb-3">{day.day}</div>
-                    <DayIcon className="w-10 h-10 mx-auto mb-3 text-secondary" />
-                    <div className="text-2xl font-bold text-foreground">{day.temp}°</div>
-                    <div className="text-sm text-muted-foreground">{day.low}°</div>
-                    <div className="text-xs text-muted-foreground mt-2">{day.condition}</div>
+          {displayWeather ? (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
+                <div className="md:col-span-3 bg-card border border-border rounded-2xl p-8 bg-gradient-to-br from-accent/30 to-transparent">
+                  <p className="text-sm text-primary font-medium mb-1">{t("weather.currentWeather")}</p>
+                  <div className="flex items-center gap-1 mb-4">
+                    <MapPin className="w-4 h-4 text-foreground" />
+                    <span className="font-bold text-foreground text-lg">{displayWeather.city}</span>
                   </div>
-                );
-              })}
+                  <div className="flex items-start justify-between mb-6">
+                    <div>
+                      <div className="text-6xl font-bold text-foreground">{displayWeather.temp}°</div>
+                      <div className="text-foreground font-semibold mt-1 capitalize">{displayWeather.description}</div>
+                      <div className="text-muted-foreground text-sm">{t("weather.feelsLike")} {displayWeather.feelsLike}°C</div>
+                    </div>
+                    <WeatherIcon className="w-16 h-16 text-secondary" />
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    {[
+                      { icon: Droplets, label: t("weather.humidityLabel"), value: `${displayWeather.humidity}%`, color: "text-blue-500" },
+                      { icon: Wind, label: t("weather.windLabel"), value: `${displayWeather.wind} m/s`, color: "text-muted-foreground" },
+                      { icon: Sun, label: "Pressure", value: `${displayWeather.pressure} hPa`, color: "text-secondary" },
+                      { icon: Cloud, label: "Visibility", value: `${displayWeather.visibility} km`, color: "text-primary" },
+                    ].map((item) => (
+                      <div key={item.label} className="bg-muted/60 rounded-xl p-3 text-center">
+                        <item.icon className={`w-5 h-5 ${item.color} mx-auto mb-1`} />
+                        <div className="text-xs text-muted-foreground">{item.label}</div>
+                        <div className="font-bold text-foreground text-sm">{item.value}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="md:col-span-2 bg-card border border-border rounded-2xl p-8">
+                  <div className="flex items-center gap-2 mb-2">
+                    <CheckCircle className="w-5 h-5 text-primary" />
+                    <h3 className="font-bold text-foreground text-lg font-display">{t("weather.farmingAdvisory")}</h3>
+                  </div>
+                  <p className="text-muted-foreground text-sm mb-4">{t("weather.advisorySubtitle")}</p>
+                  <div className="bg-primary/5 border border-primary/20 rounded-xl p-4">
+                    <p className="text-sm text-foreground leading-relaxed">{getAdvisory(displayWeather.condition, displayWeather.temp)}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-card border border-border rounded-2xl p-8">
+                <h2 className="text-xl font-bold text-foreground font-display mb-1">7-Day Forecast</h2>
+                <p className="text-muted-foreground text-sm mb-6">{t("weather.planAhead")}</p>
+                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+                  {forecast.map((day) => {
+                    const DayIcon = getWeatherIcon(day.icon);
+                    return (
+                      <div key={day.date} className="bg-muted/50 rounded-xl p-4 text-center">
+                        <div className="font-semibold text-foreground text-sm mb-1">{day.day}</div>
+                        <div className="text-xs text-muted-foreground mb-2">{day.date}</div>
+                        <DayIcon className="w-8 h-8 mx-auto mb-2 text-secondary" />
+                        <div className="text-xl font-bold text-foreground">{day.temp}°</div>
+                        <div className="text-xs text-muted-foreground">{day.low}°</div>
+                        <div className="text-xs text-muted-foreground mt-1">{day.humidity}%💧</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </>
+          ) : !loading && (
+            <div className="bg-card border border-border rounded-2xl p-16 text-center">
+              <CloudSun className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
+              <p className="text-muted-foreground">Search for a city or allow location access to see weather</p>
             </div>
-          </div>
+          )}
         </div>
       </div>
       <Footer />
