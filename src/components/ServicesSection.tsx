@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { CloudSun, TrendingUp, Sprout, MessageSquare, Users, Calendar } from "lucide-react";
+import { CloudSun, TrendingUp, Sprout, MessageSquare, Users, Calendar, Satellite, BarChart3 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const ServicesSection = () => {
