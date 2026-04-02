@@ -336,7 +336,7 @@ const Community = () => {
               <textarea value={newContent} onChange={e => setNewContent(e.target.value)} placeholder={t("community.sharePlaceholder")} rows={4} className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-sm outline-none text-foreground resize-none" />
               <div className="flex items-center gap-3">
                 <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer hover:text-foreground">
-                  <Image className="w-4 h-4" /> Add Image
+                  <Image className="w-4 h-4" /> {t("community.addImage")}
                   <input type="file" accept="image/*" onChange={e => handleImageSelect(e.target.files?.[0] || null)} className="hidden" />
                 </label>
                 {newImage && <span className="text-xs text-primary">{newImage.name}</span>}
