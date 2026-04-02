@@ -313,7 +313,7 @@ const Community = () => {
                       ))}
                       {user && (
                         <div className="flex gap-2">
-                          <input value={commentInput} onChange={e => setCommentInput(e.target.value)} onKeyDown={e => e.key === "Enter" && addComment(post.id)} placeholder="Add a comment..." className="flex-1 bg-muted rounded-lg px-3 py-2 text-sm outline-none text-foreground" />
+                          <input value={commentInput} onChange={e => setCommentInput(e.target.value)} onKeyDown={e => e.key === "Enter" && addComment(post.id)} placeholder={t("community.addComment")} className="flex-1 bg-muted rounded-lg px-3 py-2 text-sm outline-none text-foreground" />
                           <button onClick={() => addComment(post.id)} className="bg-primary text-primary-foreground px-3 rounded-lg"><Send className="w-4 h-4" /></button>
                         </div>
                       )}
