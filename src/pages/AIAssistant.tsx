@@ -14,6 +14,11 @@ const langMap: Record<string, string> = {
   mr: "mr-IN", bn: "bn-IN", kn: "kn-IN", pa: "pa-IN", ml: "ml-IN",
 };
 
+const langNameMap: Record<string, string> = {
+  en: "English", hi: "Hindi", gu: "Gujarati", ta: "Tamil", te: "Telugu",
+  mr: "Marathi", bn: "Bengali", kn: "Kannada", pa: "Punjabi", ml: "Malayalam",
+};
+
 const suggestions = [
   "What crops should I grow in Kharif season?",
   "How to improve soil fertility naturally?",
