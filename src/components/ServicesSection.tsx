@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { CloudSun, TrendingUp, Sprout, MessageSquare, Users, Calendar } from "lucide-react";
+import { CloudSun, TrendingUp, Sprout, MessageSquare, Users, Calendar, Satellite, BarChart3 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const ServicesSection = () => {
@@ -13,6 +13,8 @@ const ServicesSection = () => {
     { icon: MessageSquare, title: t("services.ai.title"), description: t("services.ai.desc"), to: "/ai-assistant", color: "text-violet-500", bg: "bg-violet-50" },
     { icon: Users, title: t("services.community.title"), description: t("services.community.desc"), to: "/community", color: "text-orange-500", bg: "bg-orange-50" },
     { icon: Calendar, title: t("services.schemes.title"), description: t("services.schemes.desc"), to: "/schemes", color: "text-red-500", bg: "bg-red-50" },
+    { icon: Satellite, title: t("services.satellite.title"), description: t("services.satellite.desc"), to: "/satellite-health", color: "text-teal-500", bg: "bg-teal-50" },
+    { icon: BarChart3, title: t("services.yield.title"), description: t("services.yield.desc"), to: "/yield-prediction", color: "text-indigo-500", bg: "bg-indigo-50" },
   ];
 
   return (

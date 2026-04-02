@@ -253,7 +253,7 @@ const Community = () => {
             </div>
             <div className="flex-1 flex items-center gap-2 bg-card border border-border rounded-lg px-3 py-2 max-w-xs">
               <Search className="w-4 h-4 text-muted-foreground" />
-              <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search..." className="bg-transparent outline-none text-sm text-foreground w-full" />
+              <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder={t("community.searchPosts")} className="bg-transparent outline-none text-sm text-foreground w-full" />
             </div>
           </div>
 
@@ -313,7 +313,7 @@ const Community = () => {
                       ))}
                       {user && (
                         <div className="flex gap-2">
-                          <input value={commentInput} onChange={e => setCommentInput(e.target.value)} onKeyDown={e => e.key === "Enter" && addComment(post.id)} placeholder="Add a comment..." className="flex-1 bg-muted rounded-lg px-3 py-2 text-sm outline-none text-foreground" />
+                          <input value={commentInput} onChange={e => setCommentInput(e.target.value)} onKeyDown={e => e.key === "Enter" && addComment(post.id)} placeholder={t("community.addComment")} className="flex-1 bg-muted rounded-lg px-3 py-2 text-sm outline-none text-foreground" />
                           <button onClick={() => addComment(post.id)} className="bg-primary text-primary-foreground px-3 rounded-lg"><Send className="w-4 h-4" /></button>
                         </div>
                       )}
@@ -330,13 +330,13 @@ const Community = () => {
       {showCreateModal && (
         <div className="fixed inset-0 z-50 bg-foreground/50 flex items-center justify-center p-4" onClick={() => setShowCreateModal(false)}>
           <div className="bg-card rounded-2xl p-6 w-full max-w-lg border border-border" onClick={e => e.stopPropagation()}>
-            <h2 className="text-xl font-bold text-foreground font-display mb-4">{tab === "story" ? "Share Your Story" : "Start a Discussion"}</h2>
+            <h2 className="text-xl font-bold text-foreground font-display mb-4">{tab === "story" ? t("community.shareYourStory") : t("community.startADiscussion")}</h2>
             <div className="space-y-4">
-              <input value={newTitle} onChange={e => setNewTitle(e.target.value)} placeholder="Title" className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-sm outline-none text-foreground" />
-              <textarea value={newContent} onChange={e => setNewContent(e.target.value)} placeholder="Share your experience..." rows={4} className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-sm outline-none text-foreground resize-none" />
+              <input value={newTitle} onChange={e => setNewTitle(e.target.value)} placeholder={t("community.titleLabel")} className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-sm outline-none text-foreground" />
+              <textarea value={newContent} onChange={e => setNewContent(e.target.value)} placeholder={t("community.sharePlaceholder")} rows={4} className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-sm outline-none text-foreground resize-none" />
               <div className="flex items-center gap-3">
                 <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer hover:text-foreground">
-                  <Image className="w-4 h-4" /> Add Image
+                  <Image className="w-4 h-4" /> {t("community.addImage")}
                   <input type="file" accept="image/*" onChange={e => handleImageSelect(e.target.files?.[0] || null)} className="hidden" />
                 </label>
                 {newImage && <span className="text-xs text-primary">{newImage.name}</span>}
@@ -348,9 +348,9 @@ const Community = () => {
                 </div>
               )}
               <div className="flex gap-3 justify-end">
-                <button onClick={() => { setShowCreateModal(false); setNewImage(null); setImagePreview(null); }} className="px-4 py-2 rounded-lg text-sm border border-border text-foreground">Cancel</button>
+                <button onClick={() => { setShowCreateModal(false); setNewImage(null); setImagePreview(null); }} className="px-4 py-2 rounded-lg text-sm border border-border text-foreground">{t("community.cancel")}</button>
                 <button onClick={createPost} disabled={creating || !newTitle.trim() || !newContent.trim()} className="bg-primary text-primary-foreground px-6 py-2 rounded-lg text-sm font-semibold disabled:opacity-50 flex items-center gap-2">
-                  {creating && <Loader2 className="w-4 h-4 animate-spin" />} Post
+                  {creating && <Loader2 className="w-4 h-4 animate-spin" />} {t("community.post")}
                 </button>
               </div>
             </div>

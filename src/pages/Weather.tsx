@@ -18,12 +18,12 @@ const getWeatherIcon = (iconCode: string) => {
   return Cloud;
 };
 
-const getAdvisory = (condition: string, temp: number) => {
-  if (condition.includes("Rain")) return "🌧️ Rain expected. Avoid spraying pesticides. Good time for sowing if soil is prepared.";
-  if (temp > 38) return "🌡️ Extreme heat. Irrigate crops early morning/evening. Provide shade to nurseries.";
-  if (temp < 10) return "❄️ Cold wave risk. Cover sensitive crops. Avoid irrigation in frost-prone hours.";
-  if (condition === "Clear" && temp > 25 && temp < 35) return "🌾 Weather conditions are favorable for farming activities. Good for spraying and harvesting.";
-  return "🌾 Weather conditions are moderate. Monitor crops regularly.";
+const getAdvisory = (condition: string, temp: number, t: (key: string) => string) => {
+  if (condition.includes("Rain")) return t("weather.advisoryRain");
+  if (temp > 38) return t("weather.advisoryHeat");
+  if (temp < 10) return t("weather.advisoryCold");
+  if (condition === "Clear" && temp > 25 && temp < 35) return t("weather.advisoryGood");
+  return t("weather.advisoryModerate");
 };
 
 const Weather = () => {
@@ -138,8 +138,8 @@ const Weather = () => {
                     {[
                       { icon: Droplets, label: t("weather.humidityLabel"), value: `${displayWeather.humidity}%`, color: "text-blue-500" },
                       { icon: Wind, label: t("weather.windLabel"), value: `${displayWeather.wind} m/s`, color: "text-muted-foreground" },
-                      { icon: Sun, label: "Pressure", value: `${displayWeather.pressure} hPa`, color: "text-secondary" },
-                      { icon: Cloud, label: "Visibility", value: `${displayWeather.visibility} km`, color: "text-primary" },
+                      { icon: Sun, label: t("weather.pressure"), value: `${displayWeather.pressure} hPa`, color: "text-secondary" },
+                      { icon: Cloud, label: t("weather.visibility"), value: `${displayWeather.visibility} km`, color: "text-primary" },
                     ].map((item) => (
                       <div key={item.label} className="bg-muted/60 rounded-xl p-3 text-center">
                         <item.icon className={`w-5 h-5 ${item.color} mx-auto mb-1`} />
@@ -157,13 +157,13 @@ const Weather = () => {
                   </div>
                   <p className="text-muted-foreground text-sm mb-4">{t("weather.advisorySubtitle")}</p>
                   <div className="bg-primary/5 border border-primary/20 rounded-xl p-4">
-                    <p className="text-sm text-foreground leading-relaxed">{getAdvisory(displayWeather.condition, displayWeather.temp)}</p>
+                    <p className="text-sm text-foreground leading-relaxed">{getAdvisory(displayWeather.condition, displayWeather.temp, t)}</p>
                   </div>
                 </div>
               </div>
 
               <div className="bg-card border border-border rounded-2xl p-8">
-                <h2 className="text-xl font-bold text-foreground font-display mb-1">7-Day Forecast</h2>
+                <h2 className="text-xl font-bold text-foreground font-display mb-1">{t("weather.fiveDayForecast")}</h2>
                 <p className="text-muted-foreground text-sm mb-6">{t("weather.planAhead")}</p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
                   {forecast.map((day) => {
@@ -185,7 +185,7 @@ const Weather = () => {
           ) : !loading && (
             <div className="bg-card border border-border rounded-2xl p-16 text-center">
               <CloudSun className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
-              <p className="text-muted-foreground">Search for a city or allow location access to see weather</p>
+              <p className="text-muted-foreground">{t("weather.noData")}</p>
             </div>
           )}
         </div>

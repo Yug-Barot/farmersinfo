@@ -183,7 +183,7 @@ const AIAssistant = () => {
         <div className={`${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 fixed lg:relative z-40 w-72 bg-card border-r border-border h-[calc(100vh-4rem)] flex flex-col transition-transform`}>
           <div className="p-4 border-b border-border flex items-center justify-between">
             <button onClick={() => { createConversation(); setSidebarOpen(false); }} className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 flex-1 justify-center">
-              <Plus className="w-4 h-4" /> New Chat
+              <Plus className="w-4 h-4" /> {t("ai.newChat")}
             </button>
             <button onClick={() => setSidebarOpen(false)} className="lg:hidden ml-2 text-muted-foreground"><X className="w-5 h-5" /></button>
           </div>
@@ -207,7 +207,7 @@ const AIAssistant = () => {
                 )}
               </div>
             ))}
-            {conversations.length === 0 && <p className="text-xs text-muted-foreground text-center py-4">No chats yet</p>}
+            {conversations.length === 0 && <p className="text-xs text-muted-foreground text-center py-4">{t("ai.noChats")}</p>}
           </div>
         </div>
 

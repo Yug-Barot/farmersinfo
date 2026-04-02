@@ -14,6 +14,8 @@ import Community from "./pages/Community";
 import Learning from "./pages/Learning";
 import AIAssistant from "./pages/AIAssistant";
 import Login from "./pages/Login";
+import SatelliteHealth from "./pages/SatelliteHealth";
+import YieldPrediction from "./pages/YieldPrediction";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +37,8 @@ const App = () => (
             <Route path="/community" element={<Community />} />
             <Route path="/learning" element={<Learning />} />
             <Route path="/ai-assistant" element={<AIAssistant />} />
+            <Route path="/satellite-health" element={<SatelliteHealth />} />
+            <Route path="/yield-prediction" element={<YieldPrediction />} />
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
