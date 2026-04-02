@@ -40,6 +40,7 @@ const Community = () => {
   const [newTitle, setNewTitle] = useState("");
   const [newContent, setNewContent] = useState("");
   const [newImage, setNewImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
   const [expandedPost, setExpandedPost] = useState<string | null>(null);
   const [comments, setComments] = useState<Record<string, Comment[]>>({});
@@ -50,15 +51,50 @@ const Community = () => {
 
   const fetchPosts = async () => {
     setLoading(true);
-    const { data } = await supabase.from("community_posts").select("*, profiles(display_name)").order("created_at", { ascending: false });
-    if (data) {
-      setPosts(data as unknown as Post[]);
+    try {
+      // Fetch posts
+      const { data: postsData, error: postsError } = await supabase
+        .from("community_posts")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (postsError) {
+        console.error("Error fetching posts:", postsError);
+        setLoading(false);
+        return;
+      }
+
+      if (!postsData || postsData.length === 0) {
+        setPosts([]);
+        setStats({ total: 0, stories: 0, discussions: 0, likes: 0 });
+        setLoading(false);
+        return;
+      }
+
+      // Fetch profiles for all user_ids
+      const userIds = [...new Set(postsData.map(p => p.user_id))];
+      const { data: profilesData } = await supabase
+        .from("profiles")
+        .select("user_id, display_name")
+        .in("user_id", userIds);
+
+      const profileMap: Record<string, string | null> = {};
+      profilesData?.forEach(p => { profileMap[p.user_id] = p.display_name; });
+
+      const enrichedPosts: Post[] = postsData.map(p => ({
+        ...p,
+        profiles: { display_name: profileMap[p.user_id] || null },
+      }));
+
+      setPosts(enrichedPosts);
       setStats({
-        total: data.length,
-        stories: data.filter(p => p.category === "story").length,
-        discussions: data.filter(p => p.category === "discussion").length,
-        likes: data.reduce((sum, p) => sum + p.likes_count, 0),
+        total: enrichedPosts.length,
+        stories: enrichedPosts.filter(p => p.category === "story").length,
+        discussions: enrichedPosts.filter(p => p.category === "discussion").length,
+        likes: enrichedPosts.reduce((sum, p) => sum + p.likes_count, 0),
       });
+    } catch (err) {
+      console.error("Unexpected error:", err);
     }
     setLoading(false);
   };
@@ -71,22 +107,59 @@ const Community = () => {
       .then(({ data }) => { if (data) setLikedPosts(new Set(data.map(l => l.post_id))); });
   }, [user]);
 
+  const handleImageSelect = (file: File | null) => {
+    setNewImage(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => setImagePreview(e.target?.result as string);
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview(null);
+    }
+  };
+
   const createPost = async () => {
     if (!user) { toast({ title: "Please sign in to post", variant: "destructive" }); return; }
-    if (!newTitle.trim() || !newContent.trim()) return;
+    if (!newTitle.trim() || !newContent.trim()) {
+      toast({ title: "Title and content are required", variant: "destructive" });
+      return;
+    }
     setCreating(true);
-    let imageUrl = null;
+    let imageUrl: string | null = null;
+
     if (newImage) {
       const ext = newImage.name.split(".").pop();
       const path = `${user.id}/${Date.now()}.${ext}`;
-      const { error } = await supabase.storage.from("community-images").upload(path, newImage);
-      if (!error) {
+      const { error: uploadError } = await supabase.storage.from("community-images").upload(path, newImage);
+      if (uploadError) {
+        console.error("Upload error:", uploadError);
+        toast({ title: "Image upload failed", description: uploadError.message, variant: "destructive" });
+      } else {
         const { data: urlData } = supabase.storage.from("community-images").getPublicUrl(path);
         imageUrl = urlData.publicUrl;
       }
     }
-    await supabase.from("community_posts").insert({ user_id: user.id, title: newTitle, content: newContent, image_url: imageUrl, category: tab });
-    setNewTitle(""); setNewContent(""); setNewImage(null); setShowCreateModal(false);
+
+    const { error: insertError } = await supabase.from("community_posts").insert({
+      user_id: user.id,
+      title: newTitle,
+      content: newContent,
+      image_url: imageUrl,
+      category: tab,
+    });
+
+    if (insertError) {
+      console.error("Insert error:", insertError);
+      toast({ title: "Failed to create post", description: insertError.message, variant: "destructive" });
+    } else {
+      toast({ title: "Post created successfully!" });
+    }
+
+    setNewTitle("");
+    setNewContent("");
+    setNewImage(null);
+    setImagePreview(null);
+    setShowCreateModal(false);
     await fetchPosts();
     setCreating(false);
   };
@@ -96,24 +169,51 @@ const Community = () => {
     if (likedPosts.has(postId)) {
       await supabase.from("post_likes").delete().eq("post_id", postId).eq("user_id", user.id);
       setLikedPosts(prev => { const n = new Set(prev); n.delete(postId); return n; });
+      setPosts(prev => prev.map(p => p.id === postId ? { ...p, likes_count: Math.max(0, p.likes_count - 1) } : p));
     } else {
       await supabase.from("post_likes").insert({ post_id: postId, user_id: user.id });
       setLikedPosts(prev => new Set(prev).add(postId));
+      setPosts(prev => prev.map(p => p.id === postId ? { ...p, likes_count: p.likes_count + 1 } : p));
     }
-    fetchPosts();
   };
 
   const loadComments = async (postId: string) => {
-    const { data } = await supabase.from("post_comments").select("*, profiles(display_name)").eq("post_id", postId).order("created_at");
-    if (data) setComments(prev => ({ ...prev, [postId]: data as unknown as Comment[] }));
+    const { data: commentsData } = await supabase
+      .from("post_comments")
+      .select("*")
+      .eq("post_id", postId)
+      .order("created_at");
+
+    if (commentsData && commentsData.length > 0) {
+      const userIds = [...new Set(commentsData.map(c => c.user_id))];
+      const { data: profilesData } = await supabase
+        .from("profiles")
+        .select("user_id, display_name")
+        .in("user_id", userIds);
+
+      const profileMap: Record<string, string | null> = {};
+      profilesData?.forEach(p => { profileMap[p.user_id] = p.display_name; });
+
+      const enriched: Comment[] = commentsData.map(c => ({
+        ...c,
+        profiles: { display_name: profileMap[c.user_id] || null },
+      }));
+      setComments(prev => ({ ...prev, [postId]: enriched }));
+    } else {
+      setComments(prev => ({ ...prev, [postId]: [] }));
+    }
   };
 
   const addComment = async (postId: string) => {
     if (!user || !commentInput.trim()) return;
-    await supabase.from("post_comments").insert({ post_id: postId, user_id: user.id, content: commentInput });
+    const { error } = await supabase.from("post_comments").insert({ post_id: postId, user_id: user.id, content: commentInput });
+    if (error) {
+      toast({ title: "Failed to add comment", variant: "destructive" });
+      return;
+    }
     setCommentInput("");
     loadComments(postId);
-    fetchPosts();
+    setPosts(prev => prev.map(p => p.id === postId ? { ...p, comments_count: p.comments_count + 1 } : p));
   };
 
   const toggleExpand = (postId: string) => {
@@ -179,7 +279,14 @@ const Community = () => {
                   </div>
                   <h3 className="text-lg font-bold text-foreground mb-2">{post.title}</h3>
                   <p className="text-sm text-muted-foreground mb-3 whitespace-pre-line">{post.content}</p>
-                  {post.image_url && <img src={post.image_url} alt="" className="rounded-xl mb-3 max-h-64 object-cover w-full" />}
+                  {post.image_url && (
+                    <img
+                      src={post.image_url}
+                      alt={post.title}
+                      className="rounded-xl mb-3 max-h-80 object-cover w-full"
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    />
+                  )}
                   <div className="flex items-center gap-4 pt-3 border-t border-border">
                     <button onClick={() => toggleLike(post.id)} className={`flex items-center gap-1.5 text-sm transition-colors ${likedPosts.has(post.id) ? "text-destructive" : "text-muted-foreground hover:text-destructive"}`}>
                       <Heart className={`w-4 h-4 ${likedPosts.has(post.id) ? "fill-current" : ""}`} /> {post.likes_count}
@@ -230,13 +337,19 @@ const Community = () => {
               <div className="flex items-center gap-3">
                 <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer hover:text-foreground">
                   <Image className="w-4 h-4" /> Add Image
-                  <input type="file" accept="image/*" onChange={e => setNewImage(e.target.files?.[0] || null)} className="hidden" />
+                  <input type="file" accept="image/*" onChange={e => handleImageSelect(e.target.files?.[0] || null)} className="hidden" />
                 </label>
                 {newImage && <span className="text-xs text-primary">{newImage.name}</span>}
               </div>
+              {imagePreview && (
+                <div className="relative">
+                  <img src={imagePreview} alt="Preview" className="rounded-lg max-h-40 object-cover" />
+                  <button onClick={() => { setNewImage(null); setImagePreview(null); }} className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs">✕</button>
+                </div>
+              )}
               <div className="flex gap-3 justify-end">
-                <button onClick={() => setShowCreateModal(false)} className="px-4 py-2 rounded-lg text-sm border border-border text-foreground">Cancel</button>
-                <button onClick={createPost} disabled={creating} className="bg-primary text-primary-foreground px-6 py-2 rounded-lg text-sm font-semibold disabled:opacity-50 flex items-center gap-2">
+                <button onClick={() => { setShowCreateModal(false); setNewImage(null); setImagePreview(null); }} className="px-4 py-2 rounded-lg text-sm border border-border text-foreground">Cancel</button>
+                <button onClick={createPost} disabled={creating || !newTitle.trim() || !newContent.trim()} className="bg-primary text-primary-foreground px-6 py-2 rounded-lg text-sm font-semibold disabled:opacity-50 flex items-center gap-2">
                   {creating && <Loader2 className="w-4 h-4 animate-spin" />} Post
                 </button>
               </div>
