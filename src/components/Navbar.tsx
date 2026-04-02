@@ -20,6 +20,8 @@ const Navbar = () => {
     { label: t("nav.marketPrices"), to: "/market-prices" },
     { label: t("nav.crops"), to: "/crops" },
     { label: t("nav.aiAssistant"), to: "/ai-assistant" },
+    { label: t("nav.satellite"), to: "/satellite-health" },
+    { label: t("nav.yieldPrediction"), to: "/yield-prediction" },
     { label: t("nav.community"), to: "/community" },
     { label: t("nav.learning"), to: "/learning" },
     { label: t("nav.schemes"), to: "/schemes" },
