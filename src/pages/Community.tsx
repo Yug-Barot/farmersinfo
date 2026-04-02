@@ -253,7 +253,7 @@ const Community = () => {
             </div>
             <div className="flex-1 flex items-center gap-2 bg-card border border-border rounded-lg px-3 py-2 max-w-xs">
               <Search className="w-4 h-4 text-muted-foreground" />
-              <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search..." className="bg-transparent outline-none text-sm text-foreground w-full" />
+              <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder={t("community.searchPosts")} className="bg-transparent outline-none text-sm text-foreground w-full" />
             </div>
           </div>
 
