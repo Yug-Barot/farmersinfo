@@ -185,7 +185,7 @@ const Weather = () => {
           ) : !loading && (
             <div className="bg-card border border-border rounded-2xl p-16 text-center">
               <CloudSun className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
-              <p className="text-muted-foreground">Search for a city or allow location access to see weather</p>
+              <p className="text-muted-foreground">{t("weather.noData")}</p>
             </div>
           )}
         </div>
