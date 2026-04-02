@@ -163,7 +163,7 @@ const Weather = () => {
               </div>
 
               <div className="bg-card border border-border rounded-2xl p-8">
-                <h2 className="text-xl font-bold text-foreground font-display mb-1">7-Day Forecast</h2>
+                <h2 className="text-xl font-bold text-foreground font-display mb-1">{t("weather.fiveDayForecast")}</h2>
                 <p className="text-muted-foreground text-sm mb-6">{t("weather.planAhead")}</p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
                   {forecast.map((day) => {
