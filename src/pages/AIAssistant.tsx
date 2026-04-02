@@ -110,7 +110,7 @@ const AIAssistant = () => {
     try {
       await streamChat({
         messages: [...messages, userMsg],
-        language: i18n.language !== "en" ? i18n.language : undefined,
+        language: langNameMap[i18n.language] || i18n.language,
         onDelta: (chunk) => {
           assistantSoFar += chunk;
           setMessages(prev => {
