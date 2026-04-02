@@ -330,7 +330,7 @@ const Community = () => {
       {showCreateModal && (
         <div className="fixed inset-0 z-50 bg-foreground/50 flex items-center justify-center p-4" onClick={() => setShowCreateModal(false)}>
           <div className="bg-card rounded-2xl p-6 w-full max-w-lg border border-border" onClick={e => e.stopPropagation()}>
-            <h2 className="text-xl font-bold text-foreground font-display mb-4">{tab === "story" ? "Share Your Story" : "Start a Discussion"}</h2>
+            <h2 className="text-xl font-bold text-foreground font-display mb-4">{tab === "story" ? t("community.shareYourStory") : t("community.startADiscussion")}</h2>
             <div className="space-y-4">
               <input value={newTitle} onChange={e => setNewTitle(e.target.value)} placeholder="Title" className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-sm outline-none text-foreground" />
               <textarea value={newContent} onChange={e => setNewContent(e.target.value)} placeholder="Share your experience..." rows={4} className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-sm outline-none text-foreground resize-none" />
