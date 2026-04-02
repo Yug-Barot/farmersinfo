@@ -207,7 +207,7 @@ const AIAssistant = () => {
                 )}
               </div>
             ))}
-            {conversations.length === 0 && <p className="text-xs text-muted-foreground text-center py-4">No chats yet</p>}
+            {conversations.length === 0 && <p className="text-xs text-muted-foreground text-center py-4">{t("ai.noChats")}</p>}
           </div>
         </div>
 
