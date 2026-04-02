@@ -14,6 +14,8 @@ import Community from "./pages/Community";
 import Learning from "./pages/Learning";
 import AIAssistant from "./pages/AIAssistant";
 import Login from "./pages/Login";
+import SatelliteHealth from "./pages/SatelliteHealth";
+import YieldPrediction from "./pages/YieldPrediction";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
