@@ -348,9 +348,9 @@ const Community = () => {
                 </div>
               )}
               <div className="flex gap-3 justify-end">
-                <button onClick={() => { setShowCreateModal(false); setNewImage(null); setImagePreview(null); }} className="px-4 py-2 rounded-lg text-sm border border-border text-foreground">Cancel</button>
+                <button onClick={() => { setShowCreateModal(false); setNewImage(null); setImagePreview(null); }} className="px-4 py-2 rounded-lg text-sm border border-border text-foreground">{t("community.cancel")}</button>
                 <button onClick={createPost} disabled={creating || !newTitle.trim() || !newContent.trim()} className="bg-primary text-primary-foreground px-6 py-2 rounded-lg text-sm font-semibold disabled:opacity-50 flex items-center gap-2">
-                  {creating && <Loader2 className="w-4 h-4 animate-spin" />} Post
+                  {creating && <Loader2 className="w-4 h-4 animate-spin" />} {t("community.post")}
                 </button>
               </div>
             </div>
