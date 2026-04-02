@@ -18,12 +18,12 @@ const getWeatherIcon = (iconCode: string) => {
   return Cloud;
 };
 
-const getAdvisory = (condition: string, temp: number) => {
-  if (condition.includes("Rain")) return "🌧️ Rain expected. Avoid spraying pesticides. Good time for sowing if soil is prepared.";
-  if (temp > 38) return "🌡️ Extreme heat. Irrigate crops early morning/evening. Provide shade to nurseries.";
-  if (temp < 10) return "❄️ Cold wave risk. Cover sensitive crops. Avoid irrigation in frost-prone hours.";
-  if (condition === "Clear" && temp > 25 && temp < 35) return "🌾 Weather conditions are favorable for farming activities. Good for spraying and harvesting.";
-  return "🌾 Weather conditions are moderate. Monitor crops regularly.";
+const getAdvisory = (condition: string, temp: number, t: (key: string) => string) => {
+  if (condition.includes("Rain")) return t("weather.advisoryRain");
+  if (temp > 38) return t("weather.advisoryHeat");
+  if (temp < 10) return t("weather.advisoryCold");
+  if (condition === "Clear" && temp > 25 && temp < 35) return t("weather.advisoryGood");
+  return t("weather.advisoryModerate");
 };
 
 const Weather = () => {
