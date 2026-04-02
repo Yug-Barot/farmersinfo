@@ -332,8 +332,8 @@ const Community = () => {
           <div className="bg-card rounded-2xl p-6 w-full max-w-lg border border-border" onClick={e => e.stopPropagation()}>
             <h2 className="text-xl font-bold text-foreground font-display mb-4">{tab === "story" ? t("community.shareYourStory") : t("community.startADiscussion")}</h2>
             <div className="space-y-4">
-              <input value={newTitle} onChange={e => setNewTitle(e.target.value)} placeholder="Title" className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-sm outline-none text-foreground" />
-              <textarea value={newContent} onChange={e => setNewContent(e.target.value)} placeholder="Share your experience..." rows={4} className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-sm outline-none text-foreground resize-none" />
+              <input value={newTitle} onChange={e => setNewTitle(e.target.value)} placeholder={t("community.titleLabel")} className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-sm outline-none text-foreground" />
+              <textarea value={newContent} onChange={e => setNewContent(e.target.value)} placeholder={t("community.sharePlaceholder")} rows={4} className="w-full bg-muted border border-border rounded-lg px-4 py-3 text-sm outline-none text-foreground resize-none" />
               <div className="flex items-center gap-3">
                 <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer hover:text-foreground">
                   <Image className="w-4 h-4" /> Add Image
