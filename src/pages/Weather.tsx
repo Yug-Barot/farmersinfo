@@ -138,8 +138,8 @@ const Weather = () => {
                     {[
                       { icon: Droplets, label: t("weather.humidityLabel"), value: `${displayWeather.humidity}%`, color: "text-blue-500" },
                       { icon: Wind, label: t("weather.windLabel"), value: `${displayWeather.wind} m/s`, color: "text-muted-foreground" },
-                      { icon: Sun, label: "Pressure", value: `${displayWeather.pressure} hPa`, color: "text-secondary" },
-                      { icon: Cloud, label: "Visibility", value: `${displayWeather.visibility} km`, color: "text-primary" },
+                      { icon: Sun, label: t("weather.pressure"), value: `${displayWeather.pressure} hPa`, color: "text-secondary" },
+                      { icon: Cloud, label: t("weather.visibility"), value: `${displayWeather.visibility} km`, color: "text-primary" },
                     ].map((item) => (
                       <div key={item.label} className="bg-muted/60 rounded-xl p-3 text-center">
                         <item.icon className={`w-5 h-5 ${item.color} mx-auto mb-1`} />
