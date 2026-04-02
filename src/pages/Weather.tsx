@@ -157,7 +157,7 @@ const Weather = () => {
                   </div>
                   <p className="text-muted-foreground text-sm mb-4">{t("weather.advisorySubtitle")}</p>
                   <div className="bg-primary/5 border border-primary/20 rounded-xl p-4">
-                    <p className="text-sm text-foreground leading-relaxed">{getAdvisory(displayWeather.condition, displayWeather.temp)}</p>
+                    <p className="text-sm text-foreground leading-relaxed">{getAdvisory(displayWeather.condition, displayWeather.temp, t)}</p>
                   </div>
                 </div>
               </div>
