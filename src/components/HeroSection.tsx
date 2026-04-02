@@ -2,9 +2,14 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Sun, Droplets, TrendingUp, ArrowRight, Sprout } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/hooks/useAuth";
 
 const HeroSection = () => {
   const { t } = useTranslation();
+  const { user, loading } = useAuth();
+
+  const ctaLink = !loading && user ? "/ai-assistant" : "/login";
+
   return (
     <section id="home" className="relative min-h-[90vh] flex items-center pt-14 overflow-hidden gradient-hero">
       <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-primary-foreground/5 -mr-40 hidden md:block" />
@@ -23,7 +28,7 @@ const HeroSection = () => {
             </h1>
             <p className="text-lg text-primary-foreground/75 mb-8 max-w-xl leading-relaxed">{t("hero.subtitle")}</p>
             <div className="flex flex-wrap gap-4">
-              <Link to="/login" className="btn-white">
+              <Link to={ctaLink} className="btn-white">
                 {t("hero.getStartedFree")} <ArrowRight className="w-4 h-4" />
               </Link>
               <Link to="/crops" className="btn-outline-white">{t("hero.exploreCrops")}</Link>

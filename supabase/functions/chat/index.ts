@@ -13,8 +13,8 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-    const langInstruction = language && language !== "en"
-      ? `IMPORTANT: Always respond in ${language} language. `
+    const langInstruction = language
+      ? `IMPORTANT: Always respond in ${language} language. Write your entire response in ${language}. `
       : "";
 
     const systemPrompt = `${langInstruction}You are CropWise AI Farm Assistant, an expert agricultural advisor for Indian farmers. You help with:
