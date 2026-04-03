@@ -19,11 +19,11 @@ const langNameMap: Record<string, string> = {
   mr: "Marathi", bn: "Bengali", kn: "Kannada", pa: "Punjabi", ml: "Malayalam",
 };
 
-const suggestions = [
-  "What crops should I grow in Kharif season?",
-  "How to improve soil fertility naturally?",
-  "Best pest control for tomato crops?",
-  "How to apply for PM-KISAN scheme?",
+const getSuggestions = (t: (key: string) => string) => [
+  t("ai.suggestion1"),
+  t("ai.suggestion2"),
+  t("ai.suggestion3"),
+  t("ai.suggestion4"),
 ];
 
 interface Conversation { id: string; title: string; updated_at: string }
