@@ -253,7 +253,7 @@ const AIAssistant = () => {
 
             {messages.length === 0 && (
               <div className="px-6 pb-4 flex flex-wrap gap-2">
-                {suggestions.map((s) => (
+                {getSuggestions(t).map((s) => (
                   <button key={s} onClick={() => handleSend(s)} className="text-xs bg-muted border border-border rounded-full px-3 py-1.5 text-foreground hover:bg-accent transition-colors">{s}</button>
                 ))}
               </div>
