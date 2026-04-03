@@ -19,11 +19,11 @@ const langNameMap: Record<string, string> = {
   mr: "Marathi", bn: "Bengali", kn: "Kannada", pa: "Punjabi", ml: "Malayalam",
 };
 
-const suggestions = [
-  "What crops should I grow in Kharif season?",
-  "How to improve soil fertility naturally?",
-  "Best pest control for tomato crops?",
-  "How to apply for PM-KISAN scheme?",
+const getSuggestions = (t: (key: string) => string) => [
+  t("ai.suggestion1"),
+  t("ai.suggestion2"),
+  t("ai.suggestion3"),
+  t("ai.suggestion4"),
 ];
 
 interface Conversation { id: string; title: string; updated_at: string }
@@ -253,7 +253,7 @@ const AIAssistant = () => {
 
             {messages.length === 0 && (
               <div className="px-6 pb-4 flex flex-wrap gap-2">
-                {suggestions.map((s) => (
+                {getSuggestions(t).map((s) => (
                   <button key={s} onClick={() => handleSend(s)} className="text-xs bg-muted border border-border rounded-full px-3 py-1.5 text-foreground hover:bg-accent transition-colors">{s}</button>
                 ))}
               </div>

@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Users, TrendingUp, MessageCircle, Heart, Plus, Search, Send, Trash2, Image, Loader2 } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Users, TrendingUp, MessageCircle, Heart, Plus, Search, Send, Trash2, Image, Video, Music, Loader2, Play, Pause } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { formatDistanceToNow } from "date-fns";
 import Navbar from "@/components/Navbar";
@@ -29,6 +29,9 @@ interface Comment {
   profiles?: { display_name: string | null } | null;
 }
 
+const isVideo = (url: string) => /\.(mp4|webm|mov|ogg)$/i.test(url) || url.includes("video");
+const isAudio = (url: string) => /\.(mp3|wav|ogg|m4a|aac)$/i.test(url) || url.includes("audio");
+
 const Community = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
@@ -39,8 +42,9 @@ const Community = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newContent, setNewContent] = useState("");
-  const [newImage, setNewImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [newMedia, setNewMedia] = useState<File | null>(null);
+  const [mediaPreview, setMediaPreview] = useState<string | null>(null);
+  const [mediaType, setMediaType] = useState<"image" | "video" | "audio" | null>(null);
   const [creating, setCreating] = useState(false);
   const [expandedPost, setExpandedPost] = useState<string | null>(null);
   const [comments, setComments] = useState<Record<string, Comment[]>>({});
@@ -52,120 +56,70 @@ const Community = () => {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      // Fetch posts
-      const { data: postsData, error: postsError } = await supabase
-        .from("community_posts")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (postsError) {
-        console.error("Error fetching posts:", postsError);
-        setLoading(false);
-        return;
-      }
-
-      if (!postsData || postsData.length === 0) {
-        setPosts([]);
-        setStats({ total: 0, stories: 0, discussions: 0, likes: 0 });
-        setLoading(false);
-        return;
-      }
-
-      // Fetch profiles for all user_ids
+      const { data: postsData, error } = await supabase
+        .from("community_posts").select("*").order("created_at", { ascending: false });
+      if (error || !postsData) { setPosts([]); setStats({ total: 0, stories: 0, discussions: 0, likes: 0 }); setLoading(false); return; }
       const userIds = [...new Set(postsData.map(p => p.user_id))];
-      const { data: profilesData } = await supabase
-        .from("profiles")
-        .select("user_id, display_name")
-        .in("user_id", userIds);
-
+      const { data: profilesData } = await supabase.from("profiles").select("user_id, display_name").in("user_id", userIds);
       const profileMap: Record<string, string | null> = {};
       profilesData?.forEach(p => { profileMap[p.user_id] = p.display_name; });
-
-      const enrichedPosts: Post[] = postsData.map(p => ({
-        ...p,
-        profiles: { display_name: profileMap[p.user_id] || null },
-      }));
-
-      setPosts(enrichedPosts);
-      setStats({
-        total: enrichedPosts.length,
-        stories: enrichedPosts.filter(p => p.category === "story").length,
-        discussions: enrichedPosts.filter(p => p.category === "discussion").length,
-        likes: enrichedPosts.reduce((sum, p) => sum + p.likes_count, 0),
-      });
-    } catch (err) {
-      console.error("Unexpected error:", err);
-    }
+      const enriched: Post[] = postsData.map(p => ({ ...p, profiles: { display_name: profileMap[p.user_id] || null } }));
+      setPosts(enriched);
+      setStats({ total: enriched.length, stories: enriched.filter(p => p.category === "story").length, discussions: enriched.filter(p => p.category === "discussion").length, likes: enriched.reduce((s, p) => s + p.likes_count, 0) });
+    } catch { /* */ }
     setLoading(false);
   };
 
   useEffect(() => { fetchPosts(); }, []);
-
   useEffect(() => {
     if (!user) return;
     supabase.from("post_likes").select("post_id").eq("user_id", user.id)
       .then(({ data }) => { if (data) setLikedPosts(new Set(data.map(l => l.post_id))); });
   }, [user]);
 
-  const handleImageSelect = (file: File | null) => {
-    setNewImage(file);
+  const handleMediaSelect = (file: File | null) => {
+    setNewMedia(file);
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => setImagePreview(e.target?.result as string);
-      reader.readAsDataURL(file);
+      const type = file.type.startsWith("video") ? "video" : file.type.startsWith("audio") ? "audio" : "image";
+      setMediaType(type);
+      if (type === "image" || type === "video") {
+        const reader = new FileReader();
+        reader.onload = (e) => setMediaPreview(e.target?.result as string);
+        reader.readAsDataURL(file);
+      } else {
+        setMediaPreview(URL.createObjectURL(file));
+      }
     } else {
-      setImagePreview(null);
+      setMediaPreview(null);
+      setMediaType(null);
     }
   };
 
   const createPost = async () => {
-    if (!user) { toast({ title: "Please sign in to post", variant: "destructive" }); return; }
-    if (!newTitle.trim() || !newContent.trim()) {
-      toast({ title: "Title and content are required", variant: "destructive" });
-      return;
-    }
+    if (!user) { toast({ title: t("community.pleaseSignInToPost"), variant: "destructive" }); return; }
+    if (!newTitle.trim() || !newContent.trim()) { toast({ title: t("community.titleContentRequired"), variant: "destructive" }); return; }
     setCreating(true);
-    let imageUrl: string | null = null;
-
-    if (newImage) {
-      const ext = newImage.name.split(".").pop();
+    let mediaUrl: string | null = null;
+    if (newMedia) {
+      const ext = newMedia.name.split(".").pop();
       const path = `${user.id}/${Date.now()}.${ext}`;
-      const { error: uploadError } = await supabase.storage.from("community-images").upload(path, newImage);
+      const { error: uploadError } = await supabase.storage.from("community-images").upload(path, newMedia);
       if (uploadError) {
-        console.error("Upload error:", uploadError);
-        toast({ title: "Image upload failed", description: uploadError.message, variant: "destructive" });
+        toast({ title: "Upload failed", description: uploadError.message, variant: "destructive" });
       } else {
         const { data: urlData } = supabase.storage.from("community-images").getPublicUrl(path);
-        imageUrl = urlData.publicUrl;
+        mediaUrl = urlData.publicUrl;
       }
     }
-
-    const { error: insertError } = await supabase.from("community_posts").insert({
-      user_id: user.id,
-      title: newTitle,
-      content: newContent,
-      image_url: imageUrl,
-      category: tab,
-    });
-
-    if (insertError) {
-      console.error("Insert error:", insertError);
-      toast({ title: "Failed to create post", description: insertError.message, variant: "destructive" });
-    } else {
-      toast({ title: "Post created successfully!" });
-    }
-
-    setNewTitle("");
-    setNewContent("");
-    setNewImage(null);
-    setImagePreview(null);
-    setShowCreateModal(false);
-    await fetchPosts();
-    setCreating(false);
+    const { error } = await supabase.from("community_posts").insert({ user_id: user.id, title: newTitle, content: newContent, image_url: mediaUrl, category: tab });
+    if (error) { toast({ title: "Failed to create post", description: error.message, variant: "destructive" }); }
+    else { toast({ title: t("community.postCreated") }); }
+    setNewTitle(""); setNewContent(""); setNewMedia(null); setMediaPreview(null); setMediaType(null); setShowCreateModal(false);
+    await fetchPosts(); setCreating(false);
   };
 
   const toggleLike = async (postId: string) => {
-    if (!user) { toast({ title: "Please sign in to like", variant: "destructive" }); return; }
+    if (!user) { toast({ title: t("community.pleaseSignInToLike"), variant: "destructive" }); return; }
     if (likedPosts.has(postId)) {
       await supabase.from("post_likes").delete().eq("post_id", postId).eq("user_id", user.id);
       setLikedPosts(prev => { const n = new Set(prev); n.delete(postId); return n; });
@@ -178,27 +132,13 @@ const Community = () => {
   };
 
   const loadComments = async (postId: string) => {
-    const { data: commentsData } = await supabase
-      .from("post_comments")
-      .select("*")
-      .eq("post_id", postId)
-      .order("created_at");
-
-    if (commentsData && commentsData.length > 0) {
-      const userIds = [...new Set(commentsData.map(c => c.user_id))];
-      const { data: profilesData } = await supabase
-        .from("profiles")
-        .select("user_id, display_name")
-        .in("user_id", userIds);
-
-      const profileMap: Record<string, string | null> = {};
-      profilesData?.forEach(p => { profileMap[p.user_id] = p.display_name; });
-
-      const enriched: Comment[] = commentsData.map(c => ({
-        ...c,
-        profiles: { display_name: profileMap[c.user_id] || null },
-      }));
-      setComments(prev => ({ ...prev, [postId]: enriched }));
+    const { data } = await supabase.from("post_comments").select("*").eq("post_id", postId).order("created_at");
+    if (data && data.length > 0) {
+      const userIds = [...new Set(data.map(c => c.user_id))];
+      const { data: profiles } = await supabase.from("profiles").select("user_id, display_name").in("user_id", userIds);
+      const map: Record<string, string | null> = {};
+      profiles?.forEach(p => { map[p.user_id] = p.display_name; });
+      setComments(prev => ({ ...prev, [postId]: data.map(c => ({ ...c, profiles: { display_name: map[c.user_id] || null } })) }));
     } else {
       setComments(prev => ({ ...prev, [postId]: [] }));
     }
@@ -206,11 +146,7 @@ const Community = () => {
 
   const addComment = async (postId: string) => {
     if (!user || !commentInput.trim()) return;
-    const { error } = await supabase.from("post_comments").insert({ post_id: postId, user_id: user.id, content: commentInput });
-    if (error) {
-      toast({ title: "Failed to add comment", variant: "destructive" });
-      return;
-    }
+    await supabase.from("post_comments").insert({ post_id: postId, user_id: user.id, content: commentInput });
     setCommentInput("");
     loadComments(postId);
     setPosts(prev => prev.map(p => p.id === postId ? { ...p, comments_count: p.comments_count + 1 } : p));
@@ -222,7 +158,25 @@ const Community = () => {
     loadComments(postId);
   };
 
-  const filtered = posts.filter(p => p.category === tab && (search ? p.title.toLowerCase().includes(search.toLowerCase()) || p.content.toLowerCase().includes(search.toLowerCase()) : true));
+  const filtered = posts.filter(p => p.category === tab && (!search || p.title.toLowerCase().includes(search.toLowerCase()) || p.content.toLowerCase().includes(search.toLowerCase())));
+
+  const renderMedia = (url: string, title: string) => {
+    if (isVideo(url)) {
+      return <video src={url} controls className="rounded-xl mb-3 max-h-80 w-full object-cover" />;
+    }
+    if (isAudio(url)) {
+      return (
+        <div className="bg-muted rounded-xl p-4 mb-3 flex items-center gap-3">
+          <Music className="w-6 h-6 text-primary" />
+          <audio src={url} controls className="flex-1" />
+        </div>
+      );
+    }
+    return (
+      <img src={url} alt={title} className="rounded-xl mb-3 max-h-80 object-cover w-full"
+        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+    );
+  };
 
   return (
     <div className="min-h-screen bg-muted">
@@ -231,7 +185,7 @@ const Community = () => {
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
             <div><h1 className="text-3xl font-bold text-foreground font-display mb-2">{t("community.title")}</h1><p className="text-muted-foreground">{t("community.subtitle")}</p></div>
-            <button onClick={() => { if (!user) { toast({ title: "Please sign in", variant: "destructive" }); return; } setShowCreateModal(true); }}
+            <button onClick={() => { if (!user) { toast({ title: t("community.pleaseSignIn"), variant: "destructive" }); return; } setShowCreateModal(true); }}
               className="bg-primary text-primary-foreground px-5 py-2.5 rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity flex items-center gap-2"><Plus className="w-4 h-4" /> {tab === "story" ? t("community.shareStory") : t("community.startDiscussion")}</button>
           </div>
 
@@ -279,14 +233,7 @@ const Community = () => {
                   </div>
                   <h3 className="text-lg font-bold text-foreground mb-2">{post.title}</h3>
                   <p className="text-sm text-muted-foreground mb-3 whitespace-pre-line">{post.content}</p>
-                  {post.image_url && (
-                    <img
-                      src={post.image_url}
-                      alt={post.title}
-                      className="rounded-xl mb-3 max-h-80 object-cover w-full"
-                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                    />
-                  )}
+                  {post.image_url && renderMedia(post.image_url, post.title)}
                   <div className="flex items-center gap-4 pt-3 border-t border-border">
                     <button onClick={() => toggleLike(post.id)} className={`flex items-center gap-1.5 text-sm transition-colors ${likedPosts.has(post.id) ? "text-destructive" : "text-muted-foreground hover:text-destructive"}`}>
                       <Heart className={`w-4 h-4 ${likedPosts.has(post.id) ? "fill-current" : ""}`} /> {post.likes_count}
@@ -337,18 +284,39 @@ const Community = () => {
               <div className="flex items-center gap-3">
                 <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer hover:text-foreground">
                   <Image className="w-4 h-4" /> {t("community.addImage")}
-                  <input type="file" accept="image/*" onChange={e => handleImageSelect(e.target.files?.[0] || null)} className="hidden" />
+                  <input type="file" accept="image/*" onChange={e => handleMediaSelect(e.target.files?.[0] || null)} className="hidden" />
                 </label>
-                {newImage && <span className="text-xs text-primary">{newImage.name}</span>}
+                <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer hover:text-foreground">
+                  <Video className="w-4 h-4" /> {t("community.addVideo") || "Video"}
+                  <input type="file" accept="video/*" onChange={e => handleMediaSelect(e.target.files?.[0] || null)} className="hidden" />
+                </label>
+                <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer hover:text-foreground">
+                  <Music className="w-4 h-4" /> {t("community.addAudio") || "Audio"}
+                  <input type="file" accept="audio/*" onChange={e => handleMediaSelect(e.target.files?.[0] || null)} className="hidden" />
+                </label>
               </div>
-              {imagePreview && (
+              {newMedia && <span className="text-xs text-primary">{newMedia.name}</span>}
+              {mediaPreview && mediaType === "image" && (
                 <div className="relative">
-                  <img src={imagePreview} alt="Preview" className="rounded-lg max-h-40 object-cover" />
-                  <button onClick={() => { setNewImage(null); setImagePreview(null); }} className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs">✕</button>
+                  <img src={mediaPreview} alt="Preview" className="rounded-lg max-h-40 object-cover" />
+                  <button onClick={() => { setNewMedia(null); setMediaPreview(null); setMediaType(null); }} className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs">✕</button>
+                </div>
+              )}
+              {mediaPreview && mediaType === "video" && (
+                <div className="relative">
+                  <video src={mediaPreview} controls className="rounded-lg max-h-40 w-full object-cover" />
+                  <button onClick={() => { setNewMedia(null); setMediaPreview(null); setMediaType(null); }} className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs">✕</button>
+                </div>
+              )}
+              {mediaPreview && mediaType === "audio" && (
+                <div className="relative bg-muted rounded-lg p-3 flex items-center gap-2">
+                  <Music className="w-5 h-5 text-primary" />
+                  <audio src={mediaPreview} controls className="flex-1" />
+                  <button onClick={() => { setNewMedia(null); setMediaPreview(null); setMediaType(null); }} className="bg-destructive text-destructive-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs">✕</button>
                 </div>
               )}
               <div className="flex gap-3 justify-end">
-                <button onClick={() => { setShowCreateModal(false); setNewImage(null); setImagePreview(null); }} className="px-4 py-2 rounded-lg text-sm border border-border text-foreground">{t("community.cancel")}</button>
+                <button onClick={() => { setShowCreateModal(false); setNewMedia(null); setMediaPreview(null); setMediaType(null); }} className="px-4 py-2 rounded-lg text-sm border border-border text-foreground">{t("community.cancel")}</button>
                 <button onClick={createPost} disabled={creating || !newTitle.trim() || !newContent.trim()} className="bg-primary text-primary-foreground px-6 py-2 rounded-lg text-sm font-semibold disabled:opacity-50 flex items-center gap-2">
                   {creating && <Loader2 className="w-4 h-4 animate-spin" />} {t("community.post")}
                 </button>

@@ -34,14 +34,38 @@
   "services": {
     "title": "વધુ સારી ખેતી માટે બધું",
     "subtitle": "ભારતીય ખેડૂતો માટે ખાસ ડિઝાઈન કરેલા શક્તિશાળી સાધનો",
-    "weather": { "title": "હવામાન આગાહી", "desc": "તમારા સ્થાન માટે ચોક્કસ 7-દિવસની હવામાન આગાહી અને ખેતી સલાહ." },
-    "market": { "title": "બજાર ભાવ", "desc": "ભારતભરની મંડીઓમાં રીઅલ-ટાઇમ ભાવ ટ્રેક કરો." },
-    "crops": { "title": "પાક માર્ગદર્શિકા", "desc": "20+ પાકની વ્યાપક માહિતી જેમાં માટી, આબોહવા અને ઋતુ શામેલ છે." },
-    "ai": { "title": "AI ખેતી સહાયક", "desc": "અમારા બુદ્ધિમાન AI સહાયક પાસેથી તમારા ખેતી પ્રશ્નોના તાત્કાલિક જવાબો મેળવો." },
-    "community": { "title": "સમુદાય હબ", "desc": "ખેડૂતો સાથે જોડાઓ, સફળતાની વાર્તાઓ શેર કરો અને અનુભવી ખેડૂતો પાસેથી શીખો." },
-    "schemes": { "title": "સરકારી યોજનાઓ", "desc": "રાજ્ય અને કેન્દ્ર સરકારની કૃષિ યોજનાઓ અને સબસિડી શોધો." },
-    "satellite": { "title": "સેટેલાઇટ સ્વાસ્થ્ય", "desc": "ઉપગ્રહ NDVI ડેટા વડે વનસ્પતિ સ્વાસ્થ્યની દેખરેખ રાખો." },
-    "yield": { "title": "ઉપજ આગાહી", "desc": "માટી, હવામાન અને પ્રાદેશિક ડેટા વડે પાક ઉપજની આગાહી કરો." }
+    "weather": {
+      "title": "હવામાન આગાહી",
+      "desc": "તમારા સ્થાન માટે ચોક્કસ 7-દિવસની હવામાન આગાહી અને ખેતી સલાહ."
+    },
+    "market": {
+      "title": "બજાર ભાવ",
+      "desc": "ભારતભરની મંડીઓમાં રીઅલ-ટાઇમ ભાવ ટ્રેક કરો."
+    },
+    "crops": {
+      "title": "પાક માર્ગદર્શિકા",
+      "desc": "20+ પાકની વ્યાપક માહિતી જેમાં માટી, આબોહવા અને ઋતુ શામેલ છે."
+    },
+    "ai": {
+      "title": "AI ખેતી સહાયક",
+      "desc": "અમારા બુદ્ધિમાન AI સહાયક પાસેથી તમારા ખેતી પ્રશ્નોના તાત્કાલિક જવાબો મેળવો."
+    },
+    "community": {
+      "title": "સમુદાય હબ",
+      "desc": "ખેડૂતો સાથે જોડાઓ, સફળતાની વાર્તાઓ શેર કરો અને અનુભવી ખેડૂતો પાસેથી શીખો."
+    },
+    "schemes": {
+      "title": "સરકારી યોજનાઓ",
+      "desc": "રાજ્ય અને કેન્દ્ર સરકારની કૃષિ યોજનાઓ અને સબસિડી શોધો."
+    },
+    "satellite": {
+      "title": "સેટેલાઇટ સ્વાસ્થ્ય",
+      "desc": "ઉપગ્રહ NDVI ડેટા વડે વનસ્પતિ સ્વાસ્થ્યની દેખરેખ રાખો."
+    },
+    "yield": {
+      "title": "ઉપજ આગાહી",
+      "desc": "માટી, હવામાન અને પ્રાદેશિક ડેટા વડે પાક ઉપજની આગાહી કરો."
+    }
   },
   "cta": {
     "title": "તમારી ખેતી બદલવા તૈયાર છો?",
@@ -109,19 +133,221 @@
     "marketCol": "બજાર",
     "price": "ભાવ",
     "change": "ફેરફાર",
-    "trend": "વલણ"
+    "trend": "વલણ",
+    "quintal": "quintal",
+    "crops": {
+      "riceBas": "Rice (Basmati)",
+      "riceNon": "Rice (Non-Basmati)",
+      "wheat": "Wheat",
+      "maize": "Maize",
+      "cotton": "Cotton",
+      "soybean": "Soybean",
+      "groundnut": "Groundnut",
+      "mustard": "Mustard",
+      "chana": "Chana (Gram)",
+      "tur": "Tur (Arhar)",
+      "urad": "Urad",
+      "moong": "Moong",
+      "sugarcane": "Sugarcane",
+      "onion": "Onion",
+      "potato": "Potato",
+      "tomato": "Tomato",
+      "chilli": "Chilli (Dry)",
+      "turmeric": "Turmeric",
+      "ginger": "Ginger",
+      "garlic": "Garlic"
+    }
   },
   "crops": {
     "title": "પાક માર્ગદર્શિકા",
     "subtitle": "ભારતમાં ઉગાડવામાં આવતા મુખ્ય પાકની વ્યાપક માહિતી",
     "searchPlaceholder": "પાક શોધો...",
-    "allSeasons": "બધી ઋતુઓ"
+    "allSeasons": "બધી ઋતુઓ",
+    "seasons": {
+      "allSeasons": "All Seasons",
+      "kharif": "Kharif",
+      "rabi": "Rabi",
+      "summer": "Summer",
+      "throughout": "Throughout",
+      "may-june": "May-June"
+    },
+    "items": {
+      "rice": {
+        "name": "Rice",
+        "desc": "Rice is the staple food for more than half of the world's population. Requires abundant water and warm climate."
+      },
+      "wheat": {
+        "name": "Wheat",
+        "desc": "Wheat is one of the most important cereals. Grown in the Rabi season across northern India."
+      },
+      "cotton": {
+        "name": "Cotton",
+        "desc": "Cotton is a major fiber crop requiring warm climate. India is the largest producer."
+      },
+      "sugarcane": {
+        "name": "Sugarcane",
+        "desc": "Sugarcane is a tropical grass requiring high temperature and abundant water."
+      },
+      "maize": {
+        "name": "Maize",
+        "desc": "Maize is a versatile crop used for food, fodder, and industrial purposes."
+      },
+      "groundnut": {
+        "name": "Groundnut",
+        "desc": "Groundnut is an important oilseed crop grown mainly in Gujarat and Rajasthan."
+      },
+      "soybean": {
+        "name": "Soybean",
+        "desc": "Soybean is a protein-rich crop used for oil extraction. Major producer: MP."
+      },
+      "mustard": {
+        "name": "Mustard",
+        "desc": "Mustard is an important Rabi oilseed crop grown across Rajasthan and UP."
+      },
+      "potato": {
+        "name": "Potato",
+        "desc": "Potato is a major vegetable crop requiring cool climate. UP is top producer."
+      },
+      "tomato": {
+        "name": "Tomato",
+        "desc": "Tomato is a popular vegetable crop grown throughout India in all seasons."
+      },
+      "onion": {
+        "name": "Onion",
+        "desc": "Onion is a major spice crop requiring cool climate. Maharashtra leads production."
+      },
+      "chilli": {
+        "name": "Chilli",
+        "desc": "Chilli is an important spice crop. Andhra Pradesh is the largest producer."
+      },
+      "turmeric": {
+        "name": "Turmeric",
+        "desc": "Turmeric is a rhizomatous spice crop. India produces 80% of the world's supply."
+      },
+      "banana": {
+        "name": "Banana",
+        "desc": "Banana is a tropical fruit requiring warm climate and abundant moisture."
+      },
+      "mango": {
+        "name": "Mango",
+        "desc": "Mango is the national fruit of India. UP, AP, and Karnataka lead production."
+      },
+      "tea": {
+        "name": "Tea",
+        "desc": "Tea is grown in hilly areas with heavy rainfall. Assam and Darjeeling are famous."
+      },
+      "coffee": {
+        "name": "Coffee",
+        "desc": "Coffee is grown in the hilly regions of Karnataka, Kerala, and Tamil Nadu."
+      },
+      "coconut": {
+        "name": "Coconut",
+        "desc": "Coconut is a versatile palm crop grown along coastal areas of Kerala and Karnataka."
+      },
+      "jute": {
+        "name": "Jute",
+        "desc": "Jute is the golden fiber of India. West Bengal is the largest producer."
+      },
+      "chana": {
+        "name": "Pulses (Chana)",
+        "desc": "Chickpea (Chana) is the most important pulse crop in India. MP leads production."
+      }
+    }
   },
   "schemes": {
     "title": "સરકારી યોજનાઓ",
     "subtitle": "ખેડૂતો માટે કૃષિ યોજનાઓ અને સબસિડી શોધો",
     "totalSchemes": "કુલ ઉપલબ્ધ યોજનાઓ",
-    "searchPlaceholder": "યોજનાઓ શોધો..."
+    "searchPlaceholder": "યોજનાઓ શોધો...",
+    "eligibility": "Eligibility",
+    "benefit": "Benefit",
+    "visitWebsite": "Visit Official Website",
+    "items": {
+      "pmKisan": {
+        "name": "PM-KISAN",
+        "desc": "Direct income support of ₹6,000 per year to farmer families.",
+        "details": "Under this scheme, eligible farmer families receive ₹6,000 per year in three equal installments of ₹2,000 each. Funds are transferred directly to the bank account.",
+        "eligibility": "All farmer families with cultivable land",
+        "benefit": "₹6,000/year"
+      },
+      "kcc": {
+        "name": "Kisan Credit Card (KCC)",
+        "desc": "Provides affordable credit to farmers for agricultural activities.",
+        "details": "KCC provides timely credit at subsidized 4% per annum interest rate for crop production, post-harvest expenses, and farm maintenance.",
+        "eligibility": "All farmers, sharecroppers, tenant farmers",
+        "benefit": "Low-interest Credit"
+      },
+      "pmfby": {
+        "name": "PM Fasal Bima Yojana",
+        "desc": "Comprehensive crop insurance scheme to protect against crop failure.",
+        "details": "Farmers pay premium of 2% for Kharif, 1.5% for Rabi, and 5% for commercial crops. Government pays remaining premium.",
+        "eligibility": "All farmers growing notified crops",
+        "benefit": "Crop Insurance"
+      },
+      "soilHealth": {
+        "name": "Soil Health Card Scheme",
+        "desc": "Free soil health cards with crop-wise nutrient recommendations.",
+        "details": "Every farmer gets a soil health card every 2 years with nutrient status and fertilizer recommendations for their specific farm.",
+        "eligibility": "All farmers across India",
+        "benefit": "Free Soil Testing"
+      },
+      "eNam": {
+        "name": "e-NAM",
+        "desc": "Pan-India electronic trading portal linking APMCs across the country.",
+        "details": "e-NAM connects 1,000+ mandis across India for transparent price discovery and better returns for farmers.",
+        "eligibility": "All farmers and traders",
+        "benefit": "Online Market Access"
+      },
+      "pmKmd": {
+        "name": "PM Kisan Maan Dhan Yojana",
+        "desc": "Pension scheme for small and marginal farmers above 60 years.",
+        "details": "Farmers receive ₹3,000 monthly pension after age 60. Contribution of ₹55 to ₹200 per month depending on age of entry.",
+        "eligibility": "Small/marginal farmers aged 18-40",
+        "benefit": "₹3,000/month pension"
+      },
+      "aif": {
+        "name": "Agricultural Infrastructure Fund",
+        "desc": "Financing for post-harvest management and community farming assets.",
+        "details": "₹1 lakh crore fund for post-harvest infrastructure. Interest subvention of 3% for loans up to ₹2 crore for 7 years.",
+        "eligibility": "Farmers, FPOs, agri-entrepreneurs",
+        "benefit": "3% Interest Subvention"
+      },
+      "nmsa": {
+        "name": "National Mission for Sustainable Agriculture",
+        "desc": "Promotes sustainable agriculture through climate change adaptation.",
+        "details": "Focuses on rainfed agriculture, soil health management, water use efficiency, and climate resilient farming practices.",
+        "eligibility": "All farmers in targeted areas",
+        "benefit": "Sustainable Farming Support"
+      },
+      "pkvy": {
+        "name": "Paramparagat Krishi Vikas Yojana",
+        "desc": "Promotes organic farming through cluster-based approach.",
+        "details": "₹50,000 per hectare for 3 years for organic farming including certification, training, and marketing support.",
+        "eligibility": "Farmers willing to adopt organic farming",
+        "benefit": "₹50,000/ha for 3 years"
+      },
+      "smam": {
+        "name": "Sub-Mission on Agricultural Mechanization",
+        "desc": "Promotes agricultural mechanization among small farmers.",
+        "details": "Subsidy of 40-50% on purchase of agricultural machinery including tractors, harvesters, and implements.",
+        "eligibility": "Small and marginal farmers",
+        "benefit": "40-50% Subsidy on Machinery"
+      },
+      "rkvy": {
+        "name": "Rashtriya Krishi Vikas Yojana",
+        "desc": "Incentivizes states to increase public investment in agriculture.",
+        "details": "Flexible funding for innovative agriculture development projects at state level.",
+        "eligibility": "State governments and institutions",
+        "benefit": "Flexible Development Fund"
+      },
+      "pmksy": {
+        "name": "PM Krishi Sinchai Yojana",
+        "desc": "Support for micro-irrigation and water management.",
+        "details": "Subsidies up to 55-70% for drip and sprinkler irrigation systems. Focus on 'Per Drop More Crop' initiative.",
+        "eligibility": "All farmers with agricultural land",
+        "benefit": "55-70% Irrigation Subsidy"
+      }
+    }
   },
   "community": {
     "title": "સમુદાય હબ",
@@ -146,7 +372,9 @@
     "pleaseSignInToPost": "પોસ્ટ કરવા સાઈન ઈન કરો",
     "titleContentRequired": "શીર્ષક અને સામગ્રી જરૂરી છે",
     "postCreated": "પોસ્ટ સફળતાપૂર્વક બનાવ્યો!",
-    "pleaseSignInToLike": "લાઈક કરવા સાઈન ઈન કરો"
+    "pleaseSignInToLike": "લાઈક કરવા સાઈન ઈન કરો",
+    "addVideo": "Video",
+    "addAudio": "Audio"
   },
   "learning": {
     "title": "લર્નિંગ હબ",
@@ -167,7 +395,11 @@
     "greeting": "નમસ્તે! 🌾 હું તમારો AI ખેતી સહાયક છું. પાક, હવામાન, બજાર ભાવ, સરકારી યોજનાઓ અથવા ખેતી તકનીકો વિશે કંઈપણ પૂછો. આજે હું તમારી કેવી મદદ કરી શકું?",
     "newChat": "નવી ચેટ",
     "noChats": "હજી કોઈ ચેટ નથી",
-    "pleaseSignIn": "AI સહાયક ઉપયોગ કરવા સાઈન ઈન કરો"
+    "pleaseSignIn": "AI સહાયક ઉપયોગ કરવા સાઈન ઈન કરો",
+    "suggestion1": "What crops should I grow in Kharif season?",
+    "suggestion2": "How to improve soil fertility naturally?",
+    "suggestion3": "Best pest control for tomato crops?",
+    "suggestion4": "How to apply for PM-KISAN scheme?"
   },
   "login": {
     "title": "Crop Wise માં આપનું સ્વાગત છે",
@@ -182,7 +414,24 @@
     "fullName": "પૂરું નામ",
     "confirmPassword": "પાસવર્ડની પુષ્ટિ કરો",
     "haveAccount": "પહેલેથી ખાતું છે?",
-    "or": "અથવા"
+    "or": "અથવા",
+    "phone": "Phone",
+    "phoneNumber": "Phone Number",
+    "sendOtp": "Send OTP",
+    "otpSent": "OTP Sent! 📱",
+    "demoOtp": "Demo OTP",
+    "otpSentTo": "OTP sent to",
+    "enterOtp": "Enter OTP",
+    "verifyOtp": "Verify & Sign In",
+    "invalidOtp": "Invalid OTP",
+    "invalidPhone": "Please enter a valid phone number",
+    "changeNumber": "Change number",
+    "passwordsMismatch": "Passwords don't match",
+    "signUpFailed": "Sign up failed",
+    "signInFailed": "Sign in failed",
+    "accountCreated": "Account created! 🌱",
+    "checkEmail": "Check your email to confirm your account.",
+    "otpVerified": "OTP Verified! ✅"
   },
   "satellite": {
     "title": "વનસ્પતિ સ્વાસ્થ્ય દેખરેખ",
@@ -208,7 +457,14 @@
     "recVeryHealthy": "વનસ્પતિ સમૃદ્ધ છે. વર્તમાન પ્રથાઓ ચાલુ રાખો.",
     "recHealthy": "સારું વનસ્પતિ સ્વાસ્થ્ય. નિયમિત સિંચાઈ અને પોષક તત્વ વ્યવસ્થાપન ચાલુ રાખો.",
     "recModerate": "વનસ્પતિ મધ્યમ તણાવ બતાવે છે. પાણીની ઉણપ અથવા જંતુ હુમલાની તપાસ કરો.",
-    "recSparse": "વનસ્પતિ ગંભીર તણાવમાં છે. તાત્કાલિક પગલાં: માટીની ભેજ તપાસો, કટોકટી સિંચાઈ કરો."
+    "recSparse": "વનસ્પતિ ગંભીર તણાવમાં છે. તાત્કાલિક પગલાં: માટીની ભેજ તપાસો, કટોકટી સિંચાઈ કરો.",
+    "mapTitle": "India Crop Health Map",
+    "stateList": "States Overview",
+    "majorCrops": "Major Crop Production",
+    "production": "Production",
+    "cropArea": "Area",
+    "districts": "District-wise Data",
+    "totalCrops": "Major Crops"
   },
   "yield": {
     "title": "પાક ઉપજ આગાહી",
@@ -242,6 +498,9 @@
     "tipSeed": "ગુણવત્તા બીજ",
     "tipSeedDesc": "અધિકૃત ડીલરો પાસેથી પ્રમાણિત ઉચ્ચ ઉપજ જાતના બીજ વાપરો.",
     "tipSeason": "યોગ્ય ઋતુ",
-    "tipSeasonDesc": "તમારા પ્રદેશના કૃષિ કેલેન્ડર મુજબ સમયસર વાવણી કરો."
+    "tipSeasonDesc": "તમારા પ્રદેશના કૃષિ કેલેન્ડર મુજબ સમયસર વાવણી કરો.",
+    "history": "History",
+    "predictionHistory": "Prediction History",
+    "noHistory": "No predictions yet. Make your first prediction!"
   }
 }
