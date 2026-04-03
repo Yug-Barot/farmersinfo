@@ -200,6 +200,54 @@ export type Database = {
         }
         Relationships: []
       }
+      yield_predictions: {
+        Row: {
+          area: number
+          confidence: number
+          created_at: string
+          crop: string
+          estimated_revenue: number
+          id: string
+          msp_price: number
+          predicted_yield: number
+          rainfall: number
+          recommendation: string | null
+          soil_type: string
+          state: string
+          user_id: string
+        }
+        Insert: {
+          area: number
+          confidence: number
+          created_at?: string
+          crop: string
+          estimated_revenue: number
+          id?: string
+          msp_price: number
+          predicted_yield: number
+          rainfall: number
+          recommendation?: string | null
+          soil_type: string
+          state: string
+          user_id: string
+        }
+        Update: {
+          area?: number
+          confidence?: number
+          created_at?: string
+          crop?: string
+          estimated_revenue?: number
+          id?: string
+          msp_price?: number
+          predicted_yield?: number
+          rainfall?: number
+          recommendation?: string | null
+          soil_type?: string
+          state?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
