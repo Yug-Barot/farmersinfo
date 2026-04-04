@@ -169,14 +169,29 @@ const SatelliteHealth = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             <div className="bg-card border border-border rounded-2xl p-6">
               <h3 className="font-bold text-foreground mb-4">{t("satellite.mapTitle") || "India Crop Health Map"}</h3>
-              <div className="relative bg-muted rounded-xl p-4">
-                <svg viewBox="100 40 300 420" className="w-full" style={{ height: "450px" }}>
+              <div className="relative bg-muted rounded-xl p-4 overflow-hidden">
+                <svg viewBox="60 20 380 460" className="w-full" style={{ height: "480px" }}>
+                  {/* India outline */}
+                  <path d="M200,45 L215,42 L230,48 L240,55 L248,52 L260,58 L275,55 L290,62 L305,58 L315,65 L320,60 L330,68 L340,72 L350,78 L355,85 L360,95 L365,108 L370,120 L372,135 L368,150 L365,160 L370,172 L375,185 L372,200 L368,210 L365,218 L370,228 L368,240 L362,252 L355,260 L350,270 L345,278 L340,285 L335,295 L328,305 L320,312 L312,318 L305,325 L298,335 L290,342 L282,348 L275,358 L268,368 L262,375 L258,385 L255,395 L250,405 L245,415 L238,422 L230,428 L222,432 L215,438 L210,445 L205,450 L198,448 L192,442 L188,435 L185,425 L180,418 L175,408 L170,398 L165,390 L160,382 L155,372 L148,362 L142,350 L138,340 L135,328 L130,318 L125,308 L120,298 L115,288 L112,278 L108,268 L105,255 L102,242 L100,228 L98,215 L100,200 L105,188 L110,175 L115,165 L120,155 L125,145 L130,135 L138,125 L145,115 L150,108 L158,98 L165,88 L172,78 L180,68 L188,58 L195,50 Z"
+                    fill="hsl(var(--primary) / 0.08)" stroke="hsl(var(--primary) / 0.3)" strokeWidth="1.5" />
+                  {/* Kashmir region */}
+                  <path d="M195,50 L200,45 L210,42 L218,45 L225,42 L230,48 L225,55 L218,58 L210,55 L205,52 Z"
+                    fill="hsl(var(--primary) / 0.05)" stroke="hsl(var(--primary) / 0.2)" strokeWidth="1" strokeDasharray="4,2" />
+                  
+                  {/* State regions - subtle backgrounds */}
                   {indianStates.map(state => (
                     <g key={state.id} onClick={() => { setSelectedState(state); setSelectedDistrict(null); }} className="cursor-pointer">
+                      {/* Glow effect for selected */}
+                      {selectedState?.id === state.id && (
+                        <circle cx={state.x} cy={state.y} r={22} fill="hsl(var(--primary) / 0.15)" className="animate-pulse" />
+                      )}
                       <circle cx={state.x} cy={state.y} r={selectedState?.id === state.id ? 16 : 12}
-                        className={`transition-all ${state.ndvi >= 0.6 ? "fill-green-500" : state.ndvi >= 0.4 ? "fill-lime-500" : state.ndvi >= 0.2 ? "fill-yellow-500" : "fill-red-500"} ${selectedState?.id === state.id ? "stroke-foreground stroke-2" : "stroke-background stroke-1"} hover:opacity-80`} />
-                      <text x={state.x} y={state.y + 24} textAnchor="middle" className="fill-foreground text-[7px] font-medium pointer-events-none">{state.name}</text>
-                      <text x={state.x} y={state.y + 4} textAnchor="middle" className="fill-white text-[7px] font-bold pointer-events-none">{state.ndvi.toFixed(1)}</text>
+                        className={`transition-all duration-300 ${state.ndvi >= 0.6 ? "fill-green-500" : state.ndvi >= 0.4 ? "fill-lime-500" : state.ndvi >= 0.2 ? "fill-yellow-500" : "fill-red-500"} hover:opacity-80`}
+                        stroke={selectedState?.id === state.id ? "hsl(var(--foreground))" : "white"}
+                        strokeWidth={selectedState?.id === state.id ? 2.5 : 1.5}
+                        filter="drop-shadow(0 1px 2px rgba(0,0,0,0.2))" />
+                      <text x={state.x} y={state.y + 4} textAnchor="middle" fill="white" fontSize="7" fontWeight="bold" className="pointer-events-none">{state.ndvi.toFixed(1)}</text>
+                      <text x={state.x} y={state.y + 26} textAnchor="middle" fill="hsl(var(--foreground))" fontSize="7" fontWeight="500" className="pointer-events-none">{state.name}</text>
                     </g>
                   ))}
                 </svg>
