@@ -169,8 +169,8 @@ const SatelliteHealth = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             <div className="bg-card border border-border rounded-2xl p-6">
               <h3 className="font-bold text-foreground mb-4">{t("satellite.mapTitle") || "India Crop Health Map"}</h3>
-              <div className="relative bg-muted rounded-xl p-4" style={{ minHeight: "450px" }}>
-                <svg viewBox="100 40 300 420" className="w-full h-full">
+              <div className="relative bg-muted rounded-xl p-4">
+                <svg viewBox="100 40 300 420" className="w-full" style={{ height: "450px" }}>
                   {indianStates.map(state => (
                     <g key={state.id} onClick={() => { setSelectedState(state); setSelectedDistrict(null); }} className="cursor-pointer">
                       <circle cx={state.x} cy={state.y} r={selectedState?.id === state.id ? 16 : 12}
