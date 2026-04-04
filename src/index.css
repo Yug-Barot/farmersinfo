@@ -4,6 +4,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Leaflet tooltip custom */
+.leaflet-tooltip-custom {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 0;
+  font-size: 13px;
+}
+.leaflet-tooltip-custom::before {
+  border-top-color: #e5e7eb;
+}
+
 @layer base {
   :root {
     --background: 0 0% 98%;
