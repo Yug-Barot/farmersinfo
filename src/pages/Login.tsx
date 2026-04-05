@@ -19,7 +19,11 @@ const Login = () => {
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
   const [generatedOtp, setGeneratedOtp] = useState("");
+  const [phoneName, setPhoneName] = useState("");
+  const [phonePassword, setPhonePassword] = useState("");
+  const [phoneConfirmPassword, setPhoneConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
@@ -62,31 +66,53 @@ const Login = () => {
     }, 1000);
   };
 
-  const verifyOtp = async () => {
+  const verifyOtp = () => {
     if (otp !== generatedOtp) {
       toast({ title: t("login.invalidOtp") || "Invalid OTP", variant: "destructive" });
       return;
     }
-    setLoading(true);
-    // Demo: sign in with a demo account for phone auth
-    const demoEmail = `${phone}@phone.cropwise.demo`;
-    const demoPass = `phone_${phone}_demo`;
-    // Try sign in first, if fails, sign up
-    const { error: signInError } = await signIn(demoEmail, demoPass);
-    if (signInError) {
-      const { error: signUpError } = await signUp(demoEmail, demoPass, `Farmer ${phone.slice(-4)}`);
-      if (signUpError) {
-        // Try sign in again after signup
-        const { error } = await signIn(demoEmail, demoPass);
-        if (error) {
-          toast({ title: t("login.otpVerified") || "OTP Verified! ✅", description: t("login.checkEmail") || "Please check your email to confirm." });
-          setLoading(false);
-          return;
-        }
-      }
-      toast({ title: t("login.accountCreated") || "Account created! 🌱" });
+    setOtpVerified(true);
+    toast({ title: t("login.otpVerified") || "OTP Verified! ✅", description: t("login.enterDetails") || "Please enter your details to continue." });
+  };
+
+  const handlePhoneSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!phoneName.trim()) {
+      toast({ title: "Please enter your name", variant: "destructive" });
+      return;
     }
-    navigate("/");
+    if (phonePassword.length < 6) {
+      toast({ title: "Password must be at least 6 characters", variant: "destructive" });
+      return;
+    }
+    if (phonePassword !== phoneConfirmPassword) {
+      toast({ title: t("login.passwordsMismatch") || "Passwords don't match", variant: "destructive" });
+      return;
+    }
+    setLoading(true);
+    const demoEmail = `${phone}@phone.cropwise.demo`;
+    // Try sign in first
+    const { error: signInError } = await signIn(demoEmail, phonePassword);
+    if (!signInError) {
+      navigate("/");
+      setLoading(false);
+      return;
+    }
+    // Sign up
+    const { error: signUpError } = await signUp(demoEmail, phonePassword, phoneName);
+    if (signUpError) {
+      toast({ title: t("login.signUpFailed") || "Sign up failed", description: signUpError, variant: "destructive" });
+      setLoading(false);
+      return;
+    }
+    // Try sign in after signup
+    const { error } = await signIn(demoEmail, phonePassword);
+    if (error) {
+      toast({ title: t("login.accountCreated") || "Account created! 🌱", description: t("login.checkEmail") || "Please check your email to confirm." });
+    } else {
+      toast({ title: t("login.accountCreated") || "Account created! 🌱" });
+      navigate("/");
+    }
     setLoading(false);
   };
 
@@ -106,9 +132,8 @@ const Login = () => {
           </h1>
           <p className="text-muted-foreground text-sm text-center mb-6">{t("login.subtitle")}</p>
 
-          {/* Login Method Tabs */}
           <div className="flex gap-2 mb-6">
-            <button onClick={() => { setLoginMethod("email"); setOtpSent(false); }}
+            <button onClick={() => { setLoginMethod("email"); setOtpSent(false); setOtpVerified(false); }}
               className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-colors ${loginMethod === "email" ? "bg-primary text-primary-foreground" : "bg-muted text-foreground border border-border"}`}>
               <Mail className="w-4 h-4" /> {t("login.email")}
             </button>
@@ -174,7 +199,7 @@ const Login = () => {
                     {t("login.sendOtp") || "Send OTP"}
                   </button>
                 </>
-              ) : (
+              ) : !otpVerified ? (
                 <>
                   <div className="text-center mb-2">
                     <p className="text-sm text-muted-foreground">{t("login.otpSentTo") || "OTP sent to"} +91-{phone}</p>
@@ -188,12 +213,45 @@ const Login = () => {
                   </div>
                   <button onClick={verifyOtp} disabled={loading || otp.length < 4} className="w-full bg-primary text-primary-foreground py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50">
                     {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                    {t("login.verifyOtp") || "Verify & Sign In"} <ArrowRight className="w-4 h-4" />
+                    {t("login.verifyOtp") || "Verify OTP"} <ArrowRight className="w-4 h-4" />
                   </button>
                   <button onClick={() => { setOtpSent(false); setOtp(""); }} className="w-full text-sm text-muted-foreground hover:text-foreground text-center">
                     {t("login.changeNumber") || "Change number"}
                   </button>
                 </>
+              ) : (
+                <form onSubmit={handlePhoneSignUp} className="space-y-4">
+                  <div className="text-center mb-2">
+                    <div className="inline-flex items-center gap-2 bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400 px-3 py-1.5 rounded-full text-sm font-medium">
+                      <Shield className="w-4 h-4" /> {t("login.phoneVerified") || "Phone Verified"}: +91-{phone}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-foreground mb-1.5 block">{t("login.fullName")}</label>
+                    <div className="flex items-center gap-2 bg-muted border border-border rounded-lg px-3 py-2.5">
+                      <User className="w-4 h-4 text-muted-foreground" />
+                      <input type="text" value={phoneName} onChange={(e) => setPhoneName(e.target.value)} placeholder={t("login.fullName") || "Full Name"} className="bg-transparent outline-none text-foreground text-sm w-full" required />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-foreground mb-1.5 block">{t("login.password")}</label>
+                    <div className="flex items-center gap-2 bg-muted border border-border rounded-lg px-3 py-2.5">
+                      <Lock className="w-4 h-4 text-muted-foreground" />
+                      <input type="password" value={phonePassword} onChange={(e) => setPhonePassword(e.target.value)} placeholder={t("login.password") || "Create Password"} className="bg-transparent outline-none text-foreground text-sm w-full" required minLength={6} />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-foreground mb-1.5 block">{t("login.confirmPassword")}</label>
+                    <div className="flex items-center gap-2 bg-muted border border-border rounded-lg px-3 py-2.5">
+                      <Lock className="w-4 h-4 text-muted-foreground" />
+                      <input type="password" value={phoneConfirmPassword} onChange={(e) => setPhoneConfirmPassword(e.target.value)} placeholder={t("login.confirmPassword") || "Confirm Password"} className="bg-transparent outline-none text-foreground text-sm w-full" required minLength={6} />
+                    </div>
+                  </div>
+                  <button type="submit" disabled={loading} className="w-full bg-primary text-primary-foreground py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50">
+                    {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                    {t("login.createAccount") || "Create Account"} <ArrowRight className="w-4 h-4" />
+                  </button>
+                </form>
               )}
             </div>
           )}
