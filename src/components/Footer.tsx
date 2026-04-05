@@ -67,7 +67,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-background/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-background/30">© {new Date().getFullYear()} Crop Wise. {t("footer.allRightsReserved")}</p>
+          <p className="text-sm text-background/30">© {new Date().getFullYear()} CropWise. {t("footer.allRightsReserved")}</p>
           <div className="flex gap-6 text-sm text-background/30">
             <a href="#" className="hover:text-background/60 transition-colors">{t("footer.privacyPolicy")}</a>
             <a href="#" className="hover:text-background/60 transition-colors">{t("footer.termsOfService")}</a>
