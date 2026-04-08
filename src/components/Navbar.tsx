@@ -25,6 +25,7 @@ const Navbar = () => {
     { label: t("nav.community"), to: "/community" },
     { label: t("nav.learning"), to: "/learning" },
     { label: t("nav.schemes"), to: "/schemes" },
+    { label: t("nav.diseaseDetection") || "Disease Detection", to: "/disease-detection" },
   ];
 
   const currentLang = languages.find((l) => l.code === i18n.language) || languages[0];
