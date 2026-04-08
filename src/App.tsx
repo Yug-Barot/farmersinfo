@@ -16,6 +16,7 @@ import AIAssistant from "./pages/AIAssistant";
 import Login from "./pages/Login";
 import SatelliteHealth from "./pages/SatelliteHealth";
 import YieldPrediction from "./pages/YieldPrediction";
+import DiseaseDetection from "./pages/DiseaseDetection";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
