@@ -112,6 +112,42 @@ export type Database = {
         }
         Relationships: []
       }
+      disease_diagnoses: {
+        Row: {
+          confidence: string | null
+          created_at: string
+          crop_name: string | null
+          diagnosis_text: string
+          disease_name: string | null
+          id: string
+          image_url: string | null
+          severity: string | null
+          user_id: string
+        }
+        Insert: {
+          confidence?: string | null
+          created_at?: string
+          crop_name?: string | null
+          diagnosis_text: string
+          disease_name?: string | null
+          id?: string
+          image_url?: string | null
+          severity?: string | null
+          user_id: string
+        }
+        Update: {
+          confidence?: string | null
+          created_at?: string
+          crop_name?: string | null
+          diagnosis_text?: string
+          disease_name?: string | null
+          id?: string
+          image_url?: string | null
+          severity?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       post_comments: {
         Row: {
           content: string
