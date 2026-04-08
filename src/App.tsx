@@ -40,6 +40,7 @@ const App = () => (
             <Route path="/ai-assistant" element={<AIAssistant />} />
             <Route path="/satellite-health" element={<SatelliteHealth />} />
             <Route path="/yield-prediction" element={<YieldPrediction />} />
+            <Route path="/disease-detection" element={<DiseaseDetection />} />
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
