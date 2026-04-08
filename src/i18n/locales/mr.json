@@ -12,7 +12,8 @@
     "getStarted": "सुरू करा",
     "language": "भाषा",
     "satellite": "Satellite Health",
-    "yieldPrediction": "Yield Prediction"
+    "yieldPrediction": "उत्पादन अंदाज",
+    "diseaseDetection": "रोग ओळख"
   },
   "hero": {
     "badge": "आधुनिक भारतासाठी स्मार्ट शेती",
