@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Leaf, Mail, Lock, User, ArrowRight, Loader2, Phone, Shield } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import { lovable } from "@/integrations/lovable/index";
 
 const Login = () => {
   const { t } = useTranslation();
