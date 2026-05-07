@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { CloudSun, CloudRain, Sun, Cloud, Wind, Droplets, MapPin, Search, CheckCircle, Loader2, Navigation } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 interface WeatherData {
   city: string; temp: number; feelsLike: number; humidity: number; wind: number; condition: string; icon: string; description: string;
@@ -95,7 +93,7 @@ const Weather = () => {
 
   return (
     <div className="min-h-screen bg-muted">
-      <Navbar />
+      
       <div className="pt-20 pb-16">
         <div className="container mx-auto px-4 max-w-5xl">
           <h1 className="text-3xl font-bold text-foreground font-display mb-2">{t("weather.title")}</h1>
@@ -190,7 +188,7 @@ const Weather = () => {
           )}
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 };

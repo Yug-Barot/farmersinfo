@@ -3,8 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Camera, Upload, Loader2, AlertTriangle, Leaf, RefreshCw, X, History, Trash2, ChevronDown, ChevronUp } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -168,7 +166,7 @@ const DiseaseDetection = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      
       <main className="pt-14">
         <section className="py-12 bg-gradient-to-b from-primary/10 to-background">
           <div className="container mx-auto px-4">
@@ -364,7 +362,7 @@ const DiseaseDetection = () => {
           </div>
         </section>
       </main>
-      <Footer />
+      
     </div>
   );
 };

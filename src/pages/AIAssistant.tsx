@@ -2,8 +2,6 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Send, Bot, User, Sprout, Plus, Trash2, Edit3, Mic, MicOff, Loader2, Menu, X, Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { streamChat, type Msg } from "@/lib/streamChat";
@@ -177,7 +175,7 @@ const AIAssistant = () => {
 
   return (
     <div className="min-h-screen bg-muted flex flex-col">
-      <Navbar />
+      
       <div className="pt-16 flex-1 flex">
         {/* Sidebar */}
         <div className={`${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 fixed lg:relative z-40 w-72 bg-card border-r border-border h-[calc(100vh-4rem)] flex flex-col transition-transform`}>

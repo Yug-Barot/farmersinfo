@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { TrendingUp, TrendingDown, Search, MapPin, IndianRupee } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 const allPrices = [
   { cropKey: "riceBas", crop: "Rice (Basmati)", market: "Delhi", price: 3412, change: "2.5%", trend: "down" as const },
@@ -43,7 +41,7 @@ const MarketPrices = () => {
 
   return (
     <div className="min-h-screen bg-muted">
-      <Navbar />
+      
       <div className="pt-20 pb-16">
         <div className="container mx-auto px-4 max-w-5xl">
           <h1 className="text-3xl font-bold text-foreground font-display mb-2">{t("market.title")}</h1>
@@ -101,7 +99,7 @@ const MarketPrices = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 };

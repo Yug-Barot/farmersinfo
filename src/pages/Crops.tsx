@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Search, Thermometer, Droplets } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 const crops = [
   { key: "rice", name: "Rice", season: "Kharif", emoji: "🌾", temp: "20-35°C", water: "100-200" },
@@ -44,7 +42,7 @@ const Crops = () => {
 
   return (
     <div className="min-h-screen bg-muted">
-      <Navbar />
+      
       <div className="pt-20 pb-16">
         <div className="container mx-auto px-4 max-w-6xl">
           <h1 className="text-3xl font-bold text-foreground font-display mb-2">{t("crops.title")}</h1>
@@ -84,7 +82,7 @@ const Crops = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 };
