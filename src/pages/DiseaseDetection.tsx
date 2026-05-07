@@ -27,11 +27,14 @@ const DiseaseDetection = () => {
   }, [user]);
 
   const fetchHistory = async () => {
-    const { data } = await supabase
+    if (!user) return;
+    const { data, error } = await supabase
       .from("disease_diagnoses")
       .select("*")
+      .eq("user_id", user.id)
       .order("created_at", { ascending: false })
       .limit(20);
+    if (error) console.error("History fetch error:", error);
     if (data) setHistory(data);
   };
 
