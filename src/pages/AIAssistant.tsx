@@ -176,7 +176,7 @@ const AIAssistant = () => {
   return (
     <div className="min-h-screen bg-muted flex flex-col">
       
-      <div className="pt-16 flex-1 flex">
+      <div className="flex-1 flex">
         {/* Sidebar */}
         <div className={`${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 fixed lg:relative z-40 w-72 bg-card border-r border-border h-[calc(100vh-4rem)] flex flex-col transition-transform`}>
           <div className="p-4 border-b border-border flex items-center justify-between">
