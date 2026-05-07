@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/AppSidebar";
+import Footer from "@/components/Footer";
 
 const AppLayout = () => {
   return (
@@ -14,6 +15,7 @@ const AppLayout = () => {
           <main className="flex-1">
             <Outlet />
           </main>
+          <Footer />
         </div>
       </div>
     </SidebarProvider>
