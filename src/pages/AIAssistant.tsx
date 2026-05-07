@@ -178,7 +178,7 @@ const AIAssistant = () => {
       
       <div className="flex-1 flex">
         {/* Sidebar */}
-        <div className={`${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 fixed lg:relative z-40 w-72 bg-card border-r border-border h-[calc(100vh-4rem)] flex flex-col transition-transform`}>
+        <div className={`${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 fixed lg:relative z-40 w-72 bg-card border-r border-border h-[calc(100vh-3rem)] flex flex-col transition-transform`}>
           <div className="p-4 border-b border-border flex items-center justify-between">
             <button onClick={() => { createConversation(); setSidebarOpen(false); }} className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 flex-1 justify-center">
               <Plus className="w-4 h-4" /> {t("ai.newChat")}
