@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { BarChart3, Sprout, Droplets, Thermometer, MapPin, TrendingUp, Loader2, Calculator, History, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { formatDistanceToNow } from "date-fns";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -111,8 +109,8 @@ const YieldPrediction = () => {
 
   return (
     <div className="min-h-screen bg-muted">
-      <Navbar />
-      <div className="pt-20 pb-16">
+      
+      <div className="py-8 pb-16">
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-3">
@@ -273,7 +271,7 @@ const YieldPrediction = () => {
           )}
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 };

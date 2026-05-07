@@ -3,8 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Camera, Upload, Loader2, AlertTriangle, Leaf, RefreshCw, X, History, Trash2, ChevronDown, ChevronUp } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -29,11 +27,14 @@ const DiseaseDetection = () => {
   }, [user]);
 
   const fetchHistory = async () => {
-    const { data } = await supabase
+    if (!user) return;
+    const { data, error } = await supabase
       .from("disease_diagnoses")
       .select("*")
+      .eq("user_id", user.id)
       .order("created_at", { ascending: false })
       .limit(20);
+    if (error) console.error("History fetch error:", error);
     if (data) setHistory(data);
   };
 
@@ -168,8 +169,8 @@ const DiseaseDetection = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
-      <main className="pt-14">
+      
+      <main className="py-4">
         <section className="py-12 bg-gradient-to-b from-primary/10 to-background">
           <div className="container mx-auto px-4">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
@@ -364,7 +365,7 @@ const DiseaseDetection = () => {
           </div>
         </section>
       </main>
-      <Footer />
+      
     </div>
   );
 };

@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { Users, TrendingUp, MessageCircle, Heart, Plus, Search, Send, Trash2, Image, Video, Music, Loader2, Play, Pause } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { formatDistanceToNow } from "date-fns";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -180,8 +178,8 @@ const Community = () => {
 
   return (
     <div className="min-h-screen bg-muted">
-      <Navbar />
-      <div className="pt-20 pb-16">
+      
+      <div className="py-8 pb-16">
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
             <div><h1 className="text-3xl font-bold text-foreground font-display mb-2">{t("community.title")}</h1><p className="text-muted-foreground">{t("community.subtitle")}</p></div>
@@ -326,7 +324,7 @@ const Community = () => {
         </div>
       )}
 
-      <Footer />
+      
     </div>
   );
 };

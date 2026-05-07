@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Satellite, Leaf, MapPin, Info, BarChart3, ChevronRight, CloudRain, Thermometer, Wind, Droplets } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 // Crop health scores
 const stateHealthData: Record<string, { ndvi: number; statusKey: string; lat: number; lng: number; majorCrops: { name: string; production: string; area: string }[]; districts: { name: string; ndvi: number; crop: string; area: string }[] }> = {
@@ -179,21 +177,19 @@ const SatelliteHealth = () => {
       const map = L.map(mapRef.current!, {
         center: [22.5, 82],
         zoom: 5,
-        minZoom: 4,
-        maxZoom: 8,
+        minZoom: 5,
+        maxZoom: 5,
         zoomControl: false,
-        scrollWheelZoom: true,
+        scrollWheelZoom: false,
+        dragging: false,
+        doubleClickZoom: false,
+        boxZoom: false,
+        keyboard: false,
+        touchZoom: false,
         attributionControl: false,
         maxBounds: L.latLngBounds(indiaBounds[0], indiaBounds[1]),
         maxBoundsViscosity: 1.0,
       });
-
-      L.control.zoom({ position: "topright" }).addTo(map);
-
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
-        subdomains: "abcd",
-        bounds: L.latLngBounds(indiaBounds[0], indiaBounds[1]),
-      }).addTo(map);
 
       leafletMapRef.current = map;
 
@@ -291,8 +287,8 @@ const SatelliteHealth = () => {
 
   return (
     <div className="min-h-screen bg-muted">
-      <Navbar />
-      <div className="pt-20 pb-16">
+      
+      <div className="py-8 pb-16">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="flex items-center gap-3 mb-2">
             <Satellite className="w-8 h-8 text-primary" />
@@ -471,7 +467,7 @@ const SatelliteHealth = () => {
           )}
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 };

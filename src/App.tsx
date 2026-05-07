@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
 import ScrollToTop from "@/components/ScrollToTop";
+import AppLayout from "@/components/AppLayout";
 import Index from "./pages/Index";
 import Weather from "./pages/Weather";
 import MarketPrices from "./pages/MarketPrices";
@@ -17,6 +18,7 @@ import Login from "./pages/Login";
 import SatelliteHealth from "./pages/SatelliteHealth";
 import YieldPrediction from "./pages/YieldPrediction";
 import DiseaseDetection from "./pages/DiseaseDetection";
+import Account from "./pages/Account";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,17 +32,20 @@ const App = () => (
         <BrowserRouter>
           <ScrollToTop />
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/weather" element={<Weather />} />
-            <Route path="/market-prices" element={<MarketPrices />} />
-            <Route path="/crops" element={<Crops />} />
-            <Route path="/schemes" element={<Schemes />} />
-            <Route path="/community" element={<Community />} />
-            <Route path="/learning" element={<Learning />} />
-            <Route path="/ai-assistant" element={<AIAssistant />} />
-            <Route path="/satellite-health" element={<SatelliteHealth />} />
-            <Route path="/yield-prediction" element={<YieldPrediction />} />
-            <Route path="/disease-detection" element={<DiseaseDetection />} />
+            <Route element={<AppLayout />}>
+              <Route path="/" element={<Index />} />
+              <Route path="/weather" element={<Weather />} />
+              <Route path="/market-prices" element={<MarketPrices />} />
+              <Route path="/crops" element={<Crops />} />
+              <Route path="/schemes" element={<Schemes />} />
+              <Route path="/community" element={<Community />} />
+              <Route path="/learning" element={<Learning />} />
+              <Route path="/ai-assistant" element={<AIAssistant />} />
+              <Route path="/satellite-health" element={<SatelliteHealth />} />
+              <Route path="/yield-prediction" element={<YieldPrediction />} />
+              <Route path="/disease-detection" element={<DiseaseDetection />} />
+              <Route path="/account" element={<Account />} />
+            </Route>
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

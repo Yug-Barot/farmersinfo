@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Search, FileText, ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 const schemes = [
   { key: "pmKisan", name: "PM-KISAN", website: "https://pmkisan.gov.in" },
@@ -31,8 +29,8 @@ const Schemes = () => {
 
   return (
     <div className="min-h-screen bg-muted">
-      <Navbar />
-      <div className="pt-20 pb-16">
+      
+      <div className="py-8 pb-16">
         <div className="container mx-auto px-4 max-w-4xl">
           <h1 className="text-3xl font-bold text-foreground font-display mb-2">{t("schemes.title")}</h1>
           <p className="text-muted-foreground mb-8">{t("schemes.subtitle")}</p>
@@ -72,7 +70,7 @@ const Schemes = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 };
