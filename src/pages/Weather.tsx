@@ -94,7 +94,7 @@ const Weather = () => {
   return (
     <div className="min-h-screen bg-muted">
       
-      <div className="pt-20 pb-16">
+      <div className="py-8 pb-16">
         <div className="container mx-auto px-4 max-w-5xl">
           <h1 className="text-3xl font-bold text-foreground font-display mb-2">{t("weather.title")}</h1>
           <p className="text-muted-foreground mb-8">{t("weather.subtitle")}</p>

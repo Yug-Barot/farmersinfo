@@ -167,7 +167,7 @@ const DiseaseDetection = () => {
   return (
     <div className="min-h-screen bg-background">
       
-      <main className="pt-14">
+      <main className="py-4">
         <section className="py-12 bg-gradient-to-b from-primary/10 to-background">
           <div className="container mx-auto px-4">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">

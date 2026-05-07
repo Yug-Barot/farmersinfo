@@ -110,7 +110,7 @@ const YieldPrediction = () => {
   return (
     <div className="min-h-screen bg-muted">
       
-      <div className="pt-20 pb-16">
+      <div className="py-8 pb-16">
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-3">
