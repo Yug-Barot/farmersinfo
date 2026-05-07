@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { TrendingUp, TrendingDown, Search, MapPin, IndianRupee, RefreshCw, Clock } from "lucide-react";
+import { useState } from "react";
+import { TrendingUp, TrendingDown, Search, MapPin, IndianRupee, Clock } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 interface PriceItem {
