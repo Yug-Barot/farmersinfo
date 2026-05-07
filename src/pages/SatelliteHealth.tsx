@@ -177,21 +177,19 @@ const SatelliteHealth = () => {
       const map = L.map(mapRef.current!, {
         center: [22.5, 82],
         zoom: 5,
-        minZoom: 4,
-        maxZoom: 8,
+        minZoom: 5,
+        maxZoom: 5,
         zoomControl: false,
-        scrollWheelZoom: true,
+        scrollWheelZoom: false,
+        dragging: false,
+        doubleClickZoom: false,
+        boxZoom: false,
+        keyboard: false,
+        touchZoom: false,
         attributionControl: false,
         maxBounds: L.latLngBounds(indiaBounds[0], indiaBounds[1]),
         maxBoundsViscosity: 1.0,
       });
-
-      L.control.zoom({ position: "topright" }).addTo(map);
-
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
-        subdomains: "abcd",
-        bounds: L.latLngBounds(indiaBounds[0], indiaBounds[1]),
-      }).addTo(map);
 
       leafletMapRef.current = map;
 
